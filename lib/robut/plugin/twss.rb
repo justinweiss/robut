@@ -1,14 +1,14 @@
 require 'twss'
 
-# A simple plugin that feeds everything said to robut through the twss
+# A simple plugin that feeds everything said in the room through the twss
 # gem.
 class Robut::Plugin::TWSS < Robut::Plugin::Base
 
   def handles?(time, sender_nick, message)
-    sent_to_me?(message)
+    true
   end
 
   def handle(time, sender_nick, message)
-    reply("That's what she said!") if TWSS(message)
+    reply("That's what she said!") if TWSS(words(message).join(" "))
   end
 end
