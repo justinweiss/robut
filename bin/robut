@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'robut'
+require 'ostruct'
+require 'logger'
+
+load ARGV[0]
+
+Robut::Connection.new.connect

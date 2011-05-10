@@ -1,0 +1,3 @@
+= Robut
+
+The friendly, plugin-enabled HipChat bot. 

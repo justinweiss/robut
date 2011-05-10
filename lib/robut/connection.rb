@@ -1,0 +1,85 @@
+require 'xmpp4r'
+require 'xmpp4r/muc/helper/simplemucclient'
+require 'ostruct'
+
+# Handles opening a connection to the HipChat server, as well 
+class Robut::Connection
+  
+  # The configuration used by the Robut connection.
+  #
+  # Parameters:
+  #
+  # +jid+, +password+, +nick+ - The HipChat credentials given on
+  # https://www.hipchat.com/account/xmpp
+  #
+  # +room+ - The chat room to join, in the format
+  # <tt>jabber_name</tt>@<tt>conference_server</tt>
+  #
+  # +logger+ - a logger instance to use for debug output.
+  attr_accessor :config
+
+  # The Jabber::Client that's connected to the HipChat server.
+  attr_accessor :client
+
+  # The MUC that wraps the Jabber Chat protocol.
+  attr_accessor :muc
+
+  class << self
+    # Class-level config. This is set by the +configure+ class method,
+    # and is used if no configuration is passed to the +initialize+
+    # method.
+    attr_accessor :config
+  end
+
+  # Configures the connection at the class level. When the +robut+ bin
+  # file is loaded, it evals the file referenced by the first
+  # command-line parameter. This file can configure the connection
+  # instance later created by +robut+ by setting parameters in the
+  # Robut::Connection.configure block.
+  def self.configure
+    self.config = OpenStruct.new
+    yield config
+    self.config = OpenStruct.new(config) if config.kind_of?(Hash)
+  end
+
+  # Initializes the connection. If no +config+ is passed, it defaults
+  # to the class_level +config+ instance variable.
+  def initialize(config = nil)
+    self.config = config || self.class.config
+    
+    self.client = Jabber::Client.new(self.config.jid)
+    self.muc = Jabber::MUC::SimpleMUCClient.new(client)
+
+    if self.config.logger
+      Jabber.logger = self.config.logger
+      Jabber.debug = true
+    end
+  end
+
+  # Send +message+ to the room we're currently connected to.
+  def reply(message)
+    muc.send Jabber::Message.new(muc.room, msg)
+  end
+
+  # Connects to the specified room with the given credentials, and
+  # enters an infinite loop. Any messages sent to the room will pass
+  # through all the included plugins.
+  def connect
+    client.connect
+    client.auth(config.password)
+    client.send(Jabber::Presence.new.set_type(:available))
+
+    plugins = Robut::Plugin.plugins.map { |p| p.new(self) }
+
+    muc.on_message do |time, nick, message|
+      plugins.each do |plugin|
+        plugin.handle(time, nick, message) if plugin.handles?(time, nick, message)
+      end
+      warn message
+    end
+
+    muc.join(config.room + '/' + config.nick)
+    loop { sleep 1 }
+  end
+  
+end
