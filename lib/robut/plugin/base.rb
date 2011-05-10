@@ -18,9 +18,20 @@ class Robut::Plugin::Base
     connection.reply(message)
   end
 
+  # words in the message with any reference to the bot's nick stripped out
+  def words(message)
+    reply = "@#{nick.downcase}"
+    message.split.reject {|word| word.downcase == reply }
+  end
+
+  # The bot's nickname, for @-replies
+  def nick
+    connection.config.nick.split.first
+  end
+
   # Was message sent to Robut?
   def sent_to_me?(message)
-    message =~ /(^|\s)@#{connection.config.nick.split.first}(\s|$)/i
+    message =~ /(^|\s)@#{nick}(\s|$)/i
   end
 
   # Does this plugin handle this kind of message? If so, return
