@@ -1,0 +1,16 @@
+# Require your plugins here
+require 'robut/plugin/twss'
+
+# Add the plugin classes to the Robut plugin list
+Robut::Plugin.plugins << Robut::Plugin::TWSS
+
+# Configure the robut jabber connection and you're good to go!
+Robut::Connection.configure do |config|
+  config.jid = '...@chat.hipchat.com/bot'
+  config.password = 'password'
+  config.nick = 'My Nick'
+  config.room = '...@conf.hipchat.com'
+  
+  # Add a logger if you want to debug the connection
+  # config.logger = Logger.new(STDOUT)
+end
