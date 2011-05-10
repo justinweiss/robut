@@ -58,7 +58,7 @@ class Robut::Connection
 
   # Send +message+ to the room we're currently connected to.
   def reply(message)
-    muc.send Jabber::Message.new(muc.room, msg)
+    muc.send Jabber::Message.new(muc.room, message)
   end
 
   # Connects to the specified room with the given credentials, and
@@ -75,7 +75,6 @@ class Robut::Connection
       plugins.each do |plugin|
         plugin.handle(time, nick, message) if plugin.handles?(time, nick, message)
       end
-      warn message
     end
 
     muc.join(config.room + '/' + config.nick)
