@@ -52,7 +52,7 @@ class Robut::Connection
     
     self.client = Jabber::Client.new(self.config.jid)
     self.muc = Jabber::MUC::SimpleMUCClient.new(client)
-    self.store = config.store || Robut::Storage::HashStore # default to in-memory store only
+    self.store = self.config.store || Robut::Storage::HashStore # default to in-memory store only
 
     if self.config.logger
       Jabber.logger = self.config.logger
