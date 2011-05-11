@@ -7,10 +7,20 @@ class Robut::Plugin::Lunch < Robut::Plugin::Base
   self.places = []
   
   def handles?(time, nick, message)
-    !self.class.places.empty? && sent_to_me?(message) && words(message).first && words(message).first.downcase == "lunch?"
+    words = words(message)
+    !self.class.places.empty? && sent_to_me?(message) && words.first && words.first.downcase == "lunch?"
   end
 
   def handle(time, nick, message)
-    reply(self.class.places[rand(self.class.places.length)] + "!")
+    case words(message).join(' ')
+    when "lunch?"
+      reply(places[rand(places.length)] + "!")
+    when "lunch places"
+      reply(places.join(', '))
+    end
+  end
+  
+  def places
+    self.class.places
   end
 end
