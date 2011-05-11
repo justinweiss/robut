@@ -49,6 +49,18 @@ Each plugin can be configured differently, or not at all. It's best to
 look at the docs for the plugins you want to use to figure out what
 kind of configuration they support.
 
+Some plugins might require storage (like the `lunch` plugin).  You can
+configure the type of storage you want to use based on the need for
+persistence.  The default is the HashStore which is in-memory only.  Below
+is an example of using the YamlStore.  
+
+  Robut::Connection.configure do |config|
+    # ...
+    Robut::Storage::YamlStore.file = "~/.robut_store"
+    config.store = Robut::Storage::YamlStore
+  end
+
+
 === Configuring the HipChat connection
 
 The Chatfile also configures the HipChat connection. This is done in a
@@ -61,6 +73,8 @@ Robut::Connection.configure block:
     config.nick = 'My Nick'
     config.room = '...@conf.hipchat.com'
     
+    # Example of the YamlStore which uses a yaml file for persistence
+    Robut::Storage::YamlStore.file = "~/.robut_store"
     config.store = Robut::Storage::YamlStore
     
     # Add a logger if you want to debug the connection
