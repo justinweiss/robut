@@ -53,4 +53,9 @@ class Robut::Plugin::Base
     raise NotImplementedError, "Implement me in #{self.class.name}!"
   end
   
+  # Accessor for the store instance
+  def store
+    connection.store
+  end
+  
 end
