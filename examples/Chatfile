@@ -1,5 +1,6 @@
 # Require your plugins here
 require 'robut/plugin/twss'
+require 'robut/storage/yaml_store'
 
 # Add the plugin classes to the Robut plugin list
 Robut::Plugin.plugins << Robut::Plugin::TWSS
@@ -10,6 +11,10 @@ Robut::Connection.configure do |config|
   config.password = 'password'
   config.nick = 'My Nick'
   config.room = '...@conf.hipchat.com'
+  
+  # Some plugins require storage
+  Robut::Storage::YamlStore.file = ".robut"
+  config.store = Robut::Storage::YamlStore
   
   # Add a logger if you want to debug the connection
   # config.logger = Logger.new(STDOUT)

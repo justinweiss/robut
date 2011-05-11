@@ -24,6 +24,9 @@ class Robut::Connection
   # The MUC that wraps the Jabber Chat protocol.
   attr_accessor :muc
 
+  # The storage instance that's available to plugins
+  attr_accessor :store
+
   class << self
     # Class-level config. This is set by the +configure+ class method,
     # and is used if no configuration is passed to the +initialize+
@@ -49,6 +52,7 @@ class Robut::Connection
     
     self.client = Jabber::Client.new(self.config.jid)
     self.muc = Jabber::MUC::SimpleMUCClient.new(client)
+    self.store = config.store || Robut::Storage::HashStore # default to in-memory store only
 
     if self.config.logger
       Jabber.logger = self.config.logger
