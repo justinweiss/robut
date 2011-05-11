@@ -47,8 +47,8 @@ class Robut::Connection
 
   # Initializes the connection. If no +config+ is passed, it defaults
   # to the class_level +config+ instance variable.
-  def initialize(config = nil)
-    self.config = config || self.class.config
+  def initialize(_config = nil)
+    self.config = _config || self.class.config
     
     self.client = Jabber::Client.new(self.config.jid)
     self.muc = Jabber::MUC::SimpleMUCClient.new(client)
