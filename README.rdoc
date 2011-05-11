@@ -1,3 +1,106 @@
 = Robut
 
-The friendly, plugin-enabled HipChat bot. 
+The friendly plugin-enabled HipChat bot. 
+
+== Installation and usage
+
+Robut can be installed by running <tt>gem install robut</tt>. This
+installs the +robut+ binary. When run, +robut+ reads a Chatfile,
+connects to the specified HipChat server and chatroom, and feeds every
+line said in the chatroom through the plugins configured by the
+Chatfile.
+
+Once robut is running, the plugins listen to what's being said in the
+chatroom. Most plugins listen for @replies to robut:
+
+  @robut lunch? # => "Banh Mi!"
+  @robut calc 1 + 1 # => 2
+
+Others listen to everything, and don't require an @reply.
+
+Some of the included plugins require extra gems to be installed:
+
+[Robut::Plugin::TWSS] requires the <tt>twss</tt> gem
+[Robut::Plugin::Meme] requires the <tt>meme_generator</tt> gem
+[Robut::Plugin::Calc] requires the <tt>calc</tt> gem
+
+== The Chatfile
+
+When the +robut+ command runs, it looks for and evals ruby code in a
+file called +Chatfile+ in the current directory. You can override the
+configuration file by passing +robut+ a path to a Chatfile as the
+first parameter:
+
+  robut /path/to/Chatfile
+
+The Chatfile is just ruby code. A simple example can be found here: Chatfile[https://github.com/justinweiss/robut/blob/master/examples/Chatfile]
+
+=== Adding and configuring plugins
+
+Plugins are ruby classes, so enabling a plugin just requires requiring
+the plugin file, optionally configuring the plugin class, and adding
+the class to the global plugin list:
+
+  require 'robut/plugin/lunch'
+  Robut::Plugin::Lunch.places = ["Banh Mi", "Mad Oven", "Mod Pizza", "Taphouse"]
+  Robut::Plugin.plugins << Robut::Plugin::Lunch
+
+Each plugin can be configured differently, or not at all. It's best to
+look at the docs for the plugins you want to use to figure out what
+kind of configuration they support.
+
+=== Configuring the HipChat connection
+
+The Chatfile also configures the HipChat connection. This is done in a
+Robut::Connection.configure block:
+
+  # Configure the robut jabber connection and you're good to go!
+  Robut::Connection.configure do |config|
+    config.jid = '...@chat.hipchat.com/bot'
+    config.password = 'password'
+    config.nick = 'My Nick'
+    config.room = '...@conf.hipchat.com'
+    
+    config.store = Robut::Storage::YamlStore
+    
+    # Add a logger if you want to debug the connection
+    # config.logger = Logger.new(STDOUT)
+  end
+
+This block usually goes at the end of the Chatfile.
+
+== Built-in plugins
+
+Robut includes a few plugins that we've found useful:
+
+[Robut::Plugin::Calc] a simple calculator. <br /> <br /> Example: <tt>@robut calc 1 + 1 # => 2</tt>
+[Robut::Plugin::Lunch] a random decider for lunch locations. <br /> <br /> Example: <tt>@robut lunch? # => "Banh Mi!"</tt>
+[Robut::Plugin::Meme] an interface to memegenerator.net. <br /> <br /> Example: <tt>@robut meme Y_U_NO FIX THE BUILD?</tt>
+[Robut::Plugin::Sayings] a simple regex listener and responder. <br /> <br /> Example: <tt>You're the worst robot ever, @robut. # => I know. </tt>
+[Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate. <br /> <br /> Example: <tt>well hurry up, you're not going fast enough # => "That's what she said!" </tt>
+
+== Writing custom plugins
+
+You can supply your own plugins to Robut. To create a plugin, subclass
+Robut::Plugin::Base and implement the <tt>handles?(time, sender_nick,
+message)</tt> and <tt>handle(time, sender_nick, message)</tt>
+methods. <tt>handles?</tt> returns true if the plugin cares about the
+message, false otherwise. +handle+ performs any plugin-specific logic.
+
+Robut::Plugin::Base provides a few helper methods that are documented
+in its class definition.
+
+== Contributing
+
+Once you've made your great commits:
+
+1. Fork robut
+2. Create a topic branch - git checkout -b my_branch
+3. Push to your branch - git push origin my_branch
+4. Send me a pull request
+5. That's it!
+
+== Todo
+
+* Support connections to multiple rooms
+* More plugins!

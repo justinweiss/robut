@@ -7,35 +7,39 @@ class Robut::Plugin::Base
   # plugin. This is mostly used to communicate back to the server.
   attr_accessor :connection
 
-  # Creates a new instance of this plugin, referencing the specified
-  # connection.
+  # Creates a new instance of this plugin that references the
+  # specified connection.
   def initialize(connection)
     self.connection = connection
   end
 
-  # Send +message+ back to the server.
+  # Send +message+ back to the HipChat server.
   def reply(message)
     connection.reply(message)
   end
 
-  # words in the message with any reference to the bot's nick stripped out
+  # An ordered list of all words in the message with any reference to
+  # the bot's nick stripped out. If +command+ is passed in, it is also
+  # stripped out. This is useful to separate the 'parameters' from the
+  # 'commands' in a message.
   def words(message, command = nil)
     reply = "@#{nick.downcase}"
     command = command.downcase if command
     message.split.reject {|word| word.downcase == reply || word.downcase == command }
   end
 
-  # The bot's nickname, for @-replies
+  # The bot's nickname, for @-replies.
   def nick
     connection.config.nick.split.first
   end
 
-  # Was message sent to Robut?
+  # Was +message+ sent to Robut as an @reply?
   def sent_to_me?(message)
     message =~ /(^|\s)@#{nick}(\s|$)/i
   end
 
-  # Is the first real message 
+  # Is +command+ the first real word in +message+? This is useful for
+  # switching based on known commands.
   def command_is?(message, command)
     words = words(message)
     sent_command = words.first

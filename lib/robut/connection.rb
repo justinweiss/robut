@@ -2,20 +2,20 @@ require 'xmpp4r'
 require 'xmpp4r/muc/helper/simplemucclient'
 require 'ostruct'
 
-# Handles opening a connection to the HipChat server, as well 
+# Handles opening a connection to the HipChat server, and feeds all
+# messages through our Robut::Plugin list.
 class Robut::Connection
   
   # The configuration used by the Robut connection.
   #
   # Parameters:
   #
-  # +jid+, +password+, +nick+ - The HipChat credentials given on
-  # https://www.hipchat.com/account/xmpp
+  # [+jid+, +password+, +nick+] The HipChat credentials given on
+  #                             https://www.hipchat.com/account/xmpp
   #
-  # +room+ - The chat room to join, in the format
-  # <tt>jabber_name</tt>@<tt>conference_server</tt>
+  # [+room+] The chat room to join, in the format <tt>jabber_name</tt>@<tt>conference_server</tt>
   #
-  # +logger+ - a logger instance to use for debug output.
+  # [+logger+] a logger instance to use for debug output.
   attr_accessor :config
 
   # The Jabber::Client that's connected to the HipChat server.
