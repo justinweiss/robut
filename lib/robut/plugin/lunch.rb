@@ -5,6 +5,7 @@ class Robut::Plugin::Lunch < Robut::Plugin::Base
     !!response(time, nick, message)
   end
 
+  # Replies with a random string selected from +places+.
   def handle(time, nick, message)
     reply(response(time, nick, message, true))
   end

@@ -32,7 +32,7 @@ class Robut::Plugin::LunchTest < Test::Unit::TestCase
 
   def test_handle_returns_pho_for_lunch
     @plugin.handle(Time.now, "John", "lunch?")
-    assert_equal ["Pho!"], @plugin.replies
+    assert_equal ["Pho!"], @plugin.connection.replies
   end
   
   def test_handle_returns_all_places_for_lunch_places
