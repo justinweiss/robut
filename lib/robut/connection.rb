@@ -78,7 +78,7 @@ class Robut::Connection
     muc.on_message do |time, nick, message|
       plugins.each do |plugin|
         begin
-          plugin.handle(time, nick, message) if plugin.handles?(time, nick, message)
+          plugin.handle(time, nick, message)
         rescue => e
           reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
         end

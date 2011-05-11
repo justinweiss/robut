@@ -13,19 +13,18 @@ class Robut::Plugin::Meme < Robut::Plugin::Base
   # from the command line. Example:
   #
   #   @robut h_mermaid look at this stuff, isn't it neat; my vinyl collection is almost complete
-  def handles?(time, nick, message)
-    word = words(message).first
-    sent_to_me?(message) && Meme::GENERATORS.has_key?(word.upcase)
-  end
-
+  #
   # Send message to the specified meme generator. If the meme requires
   # more than one line of text, lines should be separated with a semicolon.
   def handle(time, nick, message)
-    words = words(message)
-    g = Meme.new(words.shift.upcase)
-    line1, line2 = words.join(' ').split(';')
+    word = words(message).first
+    if sent_to_me?(message && Meme::GENERATORS.has_key?(word.upcase)
+      words = words(message)
+      g = Meme.new(words.shift.upcase)
+      line1, line2 = words.join(' ').split(';')
     
-    reply(g.generate(line1, line2))
+      reply(g.generate(line1, line2))
+    end
   end
   
 end

@@ -13,20 +13,18 @@ class Robut::Plugin::Sayings < Robut::Plugin::Base
   end
   self.sayings = []
 
-  # Tries to respond to any message sent to robut.
-  def handles?(time, nick, message)
-    sent_to_me?(message)
-  end
-
   # For each element in sayings, creates a regex out of the first
   # element, tries to match +message+ to it, and replies with the
   # second element if it found a match. Robut::Plugin::Sayings will
   # only respond once to each message, with the first match.
   def handle(time, nick, message)
-    self.class.sayings.each do |saying|
-      if words(message).join(' ').match(/#{saying.first}/i)
-        reply(saying.last)
-        return
+    # Tries to respond to any message sent to robut.
+    if sent_to_me?(message)
+      self.class.sayings.each do |saying|
+        if words(message).join(' ').match(/#{saying.first}/i)
+          reply(saying.last)
+          return
+        end
       end
     end
   end

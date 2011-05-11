@@ -1,6 +1,5 @@
 # All Robut plugins inherit from this base class. Plugins should
-# implement the <tt>handles?</tt> and +handle+ methods to implement
-# their functionality.
+# implement the +handle+ method to implement their functionality.
 class Robut::Plugin::Base
 
   # A reference to the connection attached to this instance of the
@@ -44,12 +43,6 @@ class Robut::Plugin::Base
     words = words(message)
     sent_command = words.first
     sent_command && sent_command.downcase == command.downcase
-  end
-
-  # Does this plugin handle this kind of message? If so, return
-  # +true+, otherwise, return +false+.
-  def handles?(time, sender_nick, message)
-    false
   end
 
   # Do whatever you need to do to handle this message.

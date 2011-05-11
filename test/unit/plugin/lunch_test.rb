@@ -9,26 +9,6 @@ class Robut::Plugin::LunchTest < Test::Unit::TestCase
     @plugin.places = ["Pho"]
   end
 
-  def test_handles_lunch_returns_true
-    assert @plugin.handles?(Time.now, "John", "anyone for lunch?")
-  end
-
-  def test_handles_food_returns_true
-    assert @plugin.handles?(Time.now, "John", "ready for food?")
-  end
-  
-  def test_handles_garbage_returns_false
-    assert !@plugin.handles?(Time.now, nil, "@robut ummmm...")
-  end
-  
-  def test_handles_new_lunch_place
-    assert @plugin.handles?(Time.now, "John", "@robut new lunch place Green Leaf")
-  end
-
-  def test_handles_remove_lunch_place
-    assert @plugin.handles?(Time.now, "John", "@robut remove lunch place Green Leaf")
-  end
-
   def test_handle_returns_pho_for_lunch
     @plugin.handle(Time.now, "John", "lunch?")
     assert_equal ["Pho!"], @plugin.connection.replies
