@@ -92,6 +92,8 @@ class Robut::Connection
         break if rsp == true
       rescue => e
         reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
+        puts e
+        puts e.backtrace.join("\n")
       end
     end    
   end
