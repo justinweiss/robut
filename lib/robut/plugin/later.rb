@@ -31,11 +31,13 @@ class Robut::Plugin::Later < Robut::Plugin::Base
         
         connection = self.connection
         threader do
-          sleep sleep_time
-          connection.handle_message(Time.now, nick, future_message)
-        rescue Exception => e
-          puts e.to_s
-          puts e.backtrace.join("\n")
+          begin
+            sleep sleep_time
+            connection.handle_message(Time.now, nick, future_message)
+          rescue Exception => e
+            puts e.to_s
+            puts e.backtrace.join("\n")
+          end
         end
         return true
       end
