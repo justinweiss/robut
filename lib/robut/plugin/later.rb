@@ -33,7 +33,8 @@ class Robut::Plugin::Later < Robut::Plugin::Base
         threader do
           sleep sleep_time
           connection.handle_message(Time.now, nick, future_message)
-        end        
+        end
+        return true
       end
     end
   end

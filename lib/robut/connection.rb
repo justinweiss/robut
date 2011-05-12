@@ -88,7 +88,8 @@ class Robut::Connection
   def handle_message(time, nick, message)
     plugins.each do |plugin|
       begin
-        plugin.handle(time, nick, message)
+        rsp = plugin.handle(time, nick, message)
+        break if rsp == true
       rescue => e
         reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
       end
