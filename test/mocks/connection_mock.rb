@@ -18,4 +18,13 @@ class Robut::ConnectionMock < Robut::Connection
   def reply(msg)
     replies << msg
   end
+  
+  def handle_message(time, nick, message)
+    messages << [time, nick, message]
+  end
+  
+  def messages
+    @messages ||= []
+  end
+  
 end

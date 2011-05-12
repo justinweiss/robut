@@ -73,20 +73,26 @@ class Robut::Connection
     client.auth(config.password)
     client.send(Jabber::Presence.new.set_type(:available))
 
-    plugins = Robut::Plugin.plugins.map { |p| p.new(self) }
-
     muc.on_message do |time, nick, message|
-      plugins.each do |plugin|
-        begin
-          plugin.handle(time, nick, message)
-        rescue => e
-          reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
-        end
-      end
+      handle_message(time, nick, message)
     end
 
     muc.join(config.room + '/' + config.nick)
     loop { sleep 1 }
+  end
+  
+  def plugins
+    @plugins ||= Robut::Plugin.plugins.map { |p| p.new(self) }
+  end
+  
+  def handle_message(time, nick, message)
+    plugins.each do |plugin|
+      begin
+        plugin.handle(time, nick, message)
+      rescue => e
+        reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
+      end
+    end    
   end
   
 end
