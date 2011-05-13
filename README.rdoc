@@ -101,10 +101,8 @@ Robut includes a few plugins that we've found useful:
 == Writing custom plugins
 
 You can supply your own plugins to Robut. To create a plugin, subclass
-Robut::Plugin::Base and implement the <tt>handles?(time, sender_nick,
-message)</tt> and <tt>handle(time, sender_nick, message)</tt>
-methods. <tt>handles?</tt> returns true if the plugin cares about the
-message, false otherwise. +handle+ performs any plugin-specific logic.
+Robut::Plugin::Base and implement the <tt>handle(time, sender_nick,
+message)</tt> to perform any plugin-specific logic.
 
 Robut::Plugin::Base provides a few helper methods that are documented
 in its class definition.
