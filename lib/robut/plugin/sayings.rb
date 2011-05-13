@@ -17,7 +17,7 @@ class Robut::Plugin::Sayings < Robut::Plugin::Base
   # element, tries to match +message+ to it, and replies with the
   # second element if it found a match. Robut::Plugin::Sayings will
   # only respond once to each message, with the first match.
-  def handle(time, nick, message)
+  def handle(time, sender_nick, message)
     # Tries to respond to any message sent to robut.
     if sent_to_me?(message)
       self.class.sayings.each do |saying|

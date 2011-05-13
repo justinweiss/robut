@@ -16,7 +16,7 @@ class Robut::Plugin::Meme < Robut::Plugin::Base
   #
   # Send message to the specified meme generator. If the meme requires
   # more than one line of text, lines should be separated with a semicolon.
-  def handle(time, nick, message)
+  def handle(time, sender_nick, message)
     word = words(message).first
     if sent_to_me?(message && Meme::GENERATORS.has_key?(word.upcase))
       words = words(message)

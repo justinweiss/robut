@@ -2,7 +2,7 @@
 class Robut::Plugin::Lunch < Robut::Plugin::Base
 
   # Replies with a random string selected from +places+.
-  def handle(time, nick, message)
+  def handle(time, sender_nick, message)
     words = words(message)    
     phrase = words.join(' ')
     # lunch?
