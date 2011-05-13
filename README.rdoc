@@ -92,6 +92,11 @@ Robut includes a few plugins that we've found useful:
 [Robut::Plugin::Meme] an interface to memegenerator.net. <br /> <br /> Example: <tt>@robut meme Y_U_NO FIX THE BUILD?</tt>
 [Robut::Plugin::Sayings] a simple regex listener and responder. <br /> <br /> Example: <tt>You're the worst robot ever, @robut. # => I know. </tt>
 [Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate. <br /> <br /> Example: <tt>well hurry up, you're not going fast enough # => "That's what she said!" </tt>
+[Robut::Plugin::Echo] echo back whatever it gets. <br /> <br /> Example: <tt>@robut echo hello word</tt>
+[Robut::Plugin::Say] invokes the "say" command (text-to-speech). <br /> <br /> Example: <tt>@robut say this rocks</tt>
+[Robut::Plugin::Ping] responds with "pong". <br /> <br /> Example: <tt>@robut ping</tt>
+[Robut::Plugin::Later] performs the given command after waiting an arbitrary amount of time. <br /> <br /> Example: <tt>@robut in 5 minutes echo @justin wake up!</tt>
+
 
 == Writing custom plugins
 
