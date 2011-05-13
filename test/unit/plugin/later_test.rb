@@ -18,7 +18,7 @@ class Robut::Plugin::LaterTest < Test::Unit::TestCase
     message = @plugin.connection.messages.first
     assert message
     assert_equal message[1], "@john"
-    assert_equal message[2], "msg me"
+    assert_equal message[2], "@robut msg me"
   end
 
   def test_replies_wih_sec

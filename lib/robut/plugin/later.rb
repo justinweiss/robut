@@ -17,13 +17,13 @@
 
 class Robut::Plugin::Later < Robut::Plugin::Base
 
-  def handle(time, nick, message)
+  def handle(time, sender_nick, message)
     if sent_to_me?(message)
       phrase = words(message).join(' ')
       if phrase =~ timer_regex
         count = $1.to_i
         scale = $2
-        future_message = $3
+        future_message =  at_nick + ' ' + $3
         
         sleep_time = count * scale_multiplier(scale)
         
@@ -32,7 +32,7 @@ class Robut::Plugin::Later < Robut::Plugin::Base
         connection = self.connection
         threader do
           sleep sleep_time
-          connection.handle_message(Time.now, nick, future_message)
+          connection.handle_message(Time.now, sender_nick, future_message)
         end
         return true
       end

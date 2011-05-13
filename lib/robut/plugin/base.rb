@@ -22,7 +22,7 @@ class Robut::Plugin::Base
   # stripped out. This is useful to separate the 'parameters' from the
   # 'commands' in a message.
   def words(message, command = nil)
-    reply = "@#{nick.downcase}"
+    reply = at_nick
     command = command.downcase if command
     message.split.reject {|word| word.downcase == reply || word.downcase == command }
   end
@@ -30,6 +30,10 @@ class Robut::Plugin::Base
   # The bot's nickname, for @-replies.
   def nick
     connection.config.nick.split.first
+  end
+  
+  def at_nick
+    "@#{nick.downcase}"
   end
 
   # Was +message+ sent to Robut as an @reply?
