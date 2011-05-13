@@ -91,7 +91,8 @@ class Robut::Connection
   def handle_message(plugins, time, nick, message)
     plugins.each do |plugin|
       begin
-        plugin.handle(time, nick, message)
+        rsp = plugin.handle(time, nick, message)
+        break if rsp == true
       rescue => e
         reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
       end
@@ -133,17 +134,6 @@ class Robut::Connection
   
   def plugins
     @plugins ||= Robut::Plugin.plugins.map { |p| p.new(self) }
-  end
-  
-  def handle_message(time, nick, message)
-    plugins.each do |plugin|
-      begin
-        rsp = plugin.handle(time, nick, message)
-        break if rsp == true
-      rescue => e
-        reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
-      end
-    end    
   end
   
 end
