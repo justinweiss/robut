@@ -2,7 +2,8 @@
 require 'robut/plugin/twss'
 require 'robut/storage/yaml_store'
 
-# Add the plugin classes to the Robut plugin list
+# Add the plugin classes to the Robut plugin list.
+# Plugins are handled in the order that they appear in this array.
 Robut::Plugin.plugins << Robut::Plugin::TWSS
 
 # Configure the robut jabber connection and you're good to go!

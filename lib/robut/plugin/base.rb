@@ -50,6 +50,9 @@ class Robut::Plugin::Base
   end
 
   # Do whatever you need to do to handle this message.
+  # If you want to stop the plugin execution chain, return +true+ from this
+  # method.  Plugins are handled in the order that they appear in
+  # Robut::Plugin.plugins
   def handle(time, sender_nick, message)
     raise NotImplementedError, "Implement me in #{self.class.name}!"
   end
