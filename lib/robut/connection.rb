@@ -120,7 +120,7 @@ class Robut::Connection
     end
 
     client.add_message_callback(200, self) { |message|
-      if !muc.from_room?(message.from) && message.type == :chat
+      if !muc.from_room?(message.from) && message.type == :chat && message.body
         time = Time.now # TODO: get real timestamp? Doesn't seem like
                         # jabber gives it to us
         sender_jid = message.from
