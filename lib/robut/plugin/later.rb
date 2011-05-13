@@ -34,7 +34,8 @@ class Robut::Plugin::Later < Robut::Plugin::Base
         threader do
           sleep sleep_time
           # TODO: ensure this connection is threadsafe
-          connection.handle_message(Time.now, sender_nick, future_message)
+          plugins = Robut::Plugin.plugins.map { |p| p.new(connection, private_sender) }
+          connection.handle_message(plugins, Time.now, sender_nick, future_message)
         end
         return true
       end

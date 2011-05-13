@@ -23,7 +23,7 @@ class Robut::ConnectionMock < Robut::Connection
     end
   end
   
-  def handle_message(time, nick, message)
+  def handle_message(plugins, time, nick, message)
     messages << [time, nick, message]
   end
   
