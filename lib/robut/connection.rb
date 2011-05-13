@@ -1,5 +1,6 @@
 require 'xmpp4r'
 require 'xmpp4r/muc/helper/simplemucclient'
+require 'xmpp4r/roster/helper/roster'
 require 'ostruct'
 
 # Handles opening a connection to the HipChat server, and feeds all
@@ -26,6 +27,9 @@ class Robut::Connection
 
   # The storage instance that's available to plugins
   attr_accessor :store
+
+  # The roster of currently available people
+  attr_accessor :roster
 
   class << self
     # Class-level config. This is set by the +configure+ class method,
@@ -60,9 +64,38 @@ class Robut::Connection
     end
   end
 
-  # Send +message+ to the room we're currently connected to.
-  def reply(message)
-    muc.send Jabber::Message.new(muc.room, message)
+  # Find a jid in the roster with the given name, case-insensitively
+  def find_jid_by_name(name)
+    name = name.downcase
+    roster.items.detect {|jid, item| item.iname.downcase == name}.first
+  end
+
+  # Send +message+ to the room we're currently connected to, or
+  # directly to the person referenced by +to+. +to+ can be either a
+  # jid or the string name of the person.
+  def reply(message, to = nil)
+    if to
+      unless to.kind_of?(Jabber::JID)
+        to = find_jid_by_name(to)
+      end
+      
+      msg = Jabber::Message.new(to || muc.room, message)
+      msg.type = :chat
+      client.send(msg)
+    else
+      muc.send(Jabber::Message.new(muc.room, message))
+    end
+  end
+
+  # Sends the chat message +message+ through +plugins+. 
+  def handle_message(plugins, time, nick, message)
+    plugins.each do |plugin|
+      begin
+        plugin.handle(time, nick, message)
+      rescue => e
+        reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
+      end
+    end
   end
 
   # Connects to the specified room with the given credentials, and
@@ -73,10 +106,27 @@ class Robut::Connection
     client.auth(config.password)
     client.send(Jabber::Presence.new.set_type(:available))
 
+    self.roster = Jabber::Roster::Helper.new(client)
+    roster.wait_for_roster
+    
     muc.on_message do |time, nick, message|
-      handle_message(time, nick, message)
+      plugins = Robut::Plugin.plugins.map { |p| p.new(self, nil) }
+      handle_message(plugins, time, nick, message)
     end
 
+    client.add_message_callback(200, self) { |message|
+      if !muc.from_room?(message.from) && message.type == :chat
+        time = Time.now # TODO: get real timestamp? Doesn't seem like
+                        # jabber gives it to us
+        sender_jid = message.from
+        plugins = Robut::Plugin.plugins.map { |p| p.new(self, sender_jid) }
+        handle_message(plugins, time, self.roster[sender_jid].iname, message.body)
+        true
+      else
+        false
+      end
+    }
+        
     muc.join(config.room + '/' + config.nick)
     loop { sleep 1 }
   end
