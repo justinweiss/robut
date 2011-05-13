@@ -33,6 +33,7 @@ class Robut::Plugin::Later < Robut::Plugin::Base
         connection = self.connection
         threader do
           sleep sleep_time
+          # TODO: ensure this connection is threadsafe
           connection.handle_message(Time.now, sender_nick, future_message)
         end
         return true
