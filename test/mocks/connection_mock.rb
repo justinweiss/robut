@@ -15,8 +15,12 @@ class Robut::ConnectionMock < Robut::Connection
     @replies ||= []
   end
   
-  def reply(msg)
-    replies << msg
+  def reply(msg, to = nil)
+    if to
+      replies << [to, msg]
+    else
+      replies << msg
+    end
   end
   
   def handle_message(time, nick, message)
