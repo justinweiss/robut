@@ -2,6 +2,7 @@
 # a time delay.  Like so:
 #
 #    @robut in 5 minutes lunch?
+#    @robut in 1 hr echo @justin wake up!
 #
 # @robut will respond effectively the same as he would if someone had told
 # him "lunch?" 5 minutes from now.  In the case of the Lunch plugin, he
