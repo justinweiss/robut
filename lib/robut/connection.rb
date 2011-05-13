@@ -95,6 +95,10 @@ class Robut::Connection
         break if rsp == true
       rescue => e
         reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
+        if config.logger
+          config.logger.error e
+          config.logger.error e.backtrace
+        end
       end
     end
   end
