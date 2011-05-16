@@ -7,20 +7,12 @@ class Robut::ConnectionMock < Robut::Connection
     self.store = Robut::Storage::HashStore
   end
 
-  def clear_replies!
-    @replies = []
-  end
-  
   def replies
     @replies ||= []
   end
   
   def reply(msg, to = nil)
-    if to
-      replies << [to, msg]
-    else
-      replies << msg
-    end
+    replies << msg
   end
   
   def handle_message(plugins, time, nick, message)

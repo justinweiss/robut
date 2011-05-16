@@ -54,14 +54,6 @@ class Robut::Plugin::Base
     message =~ /(^|\s)@#{nick}(\s|$)/i
   end
 
-  # Is +command+ the first real word in +message+? This is useful for
-  # switching based on known commands.
-  def command_is?(message, command)
-    words = words(message)
-    sent_command = words.first
-    sent_command && sent_command.downcase == command.downcase
-  end
-
   # Do whatever you need to do to handle this message.
   # If you want to stop the plugin execution chain, return +true+ from this
   # method.  Plugins are handled in the order that they appear in

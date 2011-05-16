@@ -12,7 +12,7 @@ class Robut::Plugin::LaterTest < Test::Unit::TestCase
     end
   end
 
-  def test_replies_wih_minutes
+  def test_replies_with_minutes
     @plugin.handle(Time.now, "@john", "@robut in 0 minutes msg me")
     assert_equal ["Ok, see you in 0 minutes"], @plugin.connection.replies
     message = @plugin.connection.messages.first
@@ -21,17 +21,17 @@ class Robut::Plugin::LaterTest < Test::Unit::TestCase
     assert_equal message[2], "@robut msg me"
   end
 
-  def test_replies_wih_sec
+  def test_replies_with_sec
     @plugin.handle(Time.now, "@john", "@robut in 1 sec msg me")
     assert_equal ["Ok, see you in 1 sec"], @plugin.connection.replies
   end
   
-  def test_replies_wih_hr
+  def test_replies_with_hr
     @plugin.handle(Time.now, "@john", "@robut in 1 hr msg me")
     assert_equal ["Ok, see you in 1 hr"], @plugin.connection.replies
   end
 
-  def test_replies_wih_hrs
+  def test_replies_with_hrs
     @plugin.handle(Time.now, "@john", "@robut in 2 hrs msg me")
     assert_equal ["Ok, see you in 2 hrs"], @plugin.connection.replies
   end

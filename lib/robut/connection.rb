@@ -46,9 +46,14 @@ class Robut::Connection
   def self.configure
     self.config = OpenStruct.new
     yield config
-    self.config = OpenStruct.new(config) if config.kind_of?(Hash)
   end
 
+  # Sets the instance config to +config+, converting it into an
+  # OpenStruct if necessary.
+  def config=(config)
+    @config = config.kind_of?(Hash) ? OpenStruct.new(config) : config
+  end
+  
   # Initializes the connection. If no +config+ is passed, it defaults
   # to the class_level +config+ instance variable.
   def initialize(_config = nil)
@@ -91,7 +96,7 @@ class Robut::Connection
         reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
         if config.logger
           config.logger.error e
-          config.logger.error e.backtrace
+          config.logger.error e.backtrace.join("\n")
         end
       end
     end
@@ -134,11 +139,6 @@ class Robut::Connection
 
     trap_signals
     loop { sleep 1 }
-  end
-
-  # New instances of every plugin class in Robut::Plugin.plugins.
-  def plugins
-    @plugins ||= Robut::Plugin.plugins.map { |p| p.new(self) }
   end
 
   private

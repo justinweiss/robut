@@ -12,6 +12,13 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+Rake::TestTask.new(:coverage) do |t|
+  t.libs << "test"
+  t.ruby_opts = ["-rsimplecov_helper"]
+  t.test_files = FileList['test/**/*_test.rb']
+  t.verbose = true
+end
+
 Rake::RDocTask.new do |rd|
   rd.main = "README.rdoc"
   rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
