@@ -3,10 +3,10 @@ require 'json'
 
 class Robut::Plugin::Rdio < Robut::Plugin::Base
   
-  # A simple server to communicate new Rdio sources to the Web Playback
-  # API. The client will update Robut::Plugin::Rdio::Server.queue with
-  # any new songs, and a call to /queue.json will pull those new songs
-  # as a json object.
+  # A simple server to communicate new Rdio sources to the Web
+  # Playback API. The client will update
+  # Robut::Plugin::Rdio::Server.queue with any new sources, and a call
+  # to /queue.json will pull those new sources as a json object.
   class Server < Sinatra::Base
 
     set :root, File.dirname(__FILE__)

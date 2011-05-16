@@ -2,7 +2,8 @@ require 'rdio'
 require 'robut/plugin/rdio/server'
 
 # A plugin that hooks into Rdio, allowing you to queue songs from
-# HipChat. 
+# HipChat. +key+ and +secret+ must be set before we can deal with any
+# Rdio commands.
 class Robut::Plugin::Rdio < Robut::Plugin::Base
 
   class << self
@@ -39,6 +40,11 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
     end
   end
 
+  private
+
+  # Searches Rdio for sources matching +words+. If the first word is
+  # 'track', it only searches tracks, same for 'album'. Otherwise,
+  # matches both albums and tracks.
   def search(words)
     api = Rdio::Api.new(self.class.key, self.class.secret)
     
