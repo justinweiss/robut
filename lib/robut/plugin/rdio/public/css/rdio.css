@@ -9,9 +9,10 @@ body {
 }
 
 h1, h2 {
-  text-shadow: 0px 1px 1px #ffffff;
-  filter: dropshadow(color=#ffffff, offx=0, offy=1);
+  background-color: #fff;
   text-rendering: optimizeLegibility;
+  padding: 8px 12px;
+  display: none;
 }
 
 h1 {
@@ -22,22 +23,36 @@ h1 {
 h2 {
   clear: left;
   font-size: 1.8em;
-  text-shadow: 0px 1px 1px #ffffff;
-  filter: dropshadow(color=#ffffff, offx=0, offy=1);
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-topright: 4px;
+  -moz-border-radius-bottomright: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 
 #player {
   margin-bottom: 32px;
 }
 
+#player:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
 #filter {
   background: none; /* Old browsers */
 
   background: -webkit-gradient(linear, 0 0, 0 100%,
-		color-stop(0, rgba(255,255,255,0.25)),
-    color-stop(0.5, rgba(255,255,255,0.15)),
+		color-stop(0, rgba(255,255,255,0.30)),
+    color-stop(0.5, rgba(255,255,255,0.25)),
 		color-stop(0.5, rgba(255,255,255,0.1)),
-    color-stop(1, rgba(255,255,255,0.20)));
+    color-stop(1, rgba(255,255,255,0.30)));
   
   position: absolute;
   top: 0px;
@@ -53,16 +68,15 @@ h2 {
   min-height: 200px;
 }
 
-#controls img, ul {
+#controls img {
   -webkit-box-shadow: 0px 3px 4px #666;
   -moz-box-shadow: 0px 3px 4px #666;
   box-shadow: 0px 3px 4px #666;
 }
 
-#controls img {
+#controls img, #controls #filter, h1 {
   -moz-border-radius: 4px;
   border-radius: 4px;
-
 }
 
 ul {
@@ -75,13 +89,9 @@ ul {
   margin-left: 220px;
 }
 
-li {
+li, h1, h2 {
   text-shadow: 0px 1px 1px #ffffff;
   filter: dropshadow(color=#ffffff, offx=0, offy=1);
-  border: 1px solid #989898;
-  border-bottom-width: 0px;
-  padding: 8px;
-  font-weight: bold;
   background: #eeeeee; /* Old browsers */
   background: -moz-linear-gradient(top, #eeeeee 0%, #cccccc 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
@@ -90,6 +100,19 @@ li {
   background: -ms-linear-gradient(top, #eeeeee 0%,#cccccc 100%); /* IE10+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
   background: linear-gradient(top, #eeeeee 0%,#cccccc 100%); /* W3C */
+}
+
+li, h2, h1 {
+  border: 1px solid #989898;
+}
+
+li, h2 {
+  border-bottom-width: 0px;
+}
+
+li {
+  padding: 8px;
+  font-weight: bold;
 }
 
 li:last-child {
@@ -109,6 +132,10 @@ li.playing {
   color: #fff;
   text-shadow: 0px -1px 1px #777777;
   filter: dropshadow(color=#777777, offx=0, offy=-1);
+}
+
+li.playing+li {
+  border-top-color: #007cf9;
 }
 
 

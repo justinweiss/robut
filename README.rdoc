@@ -23,6 +23,7 @@ Some of the included plugins require extra gems to be installed:
 [Robut::Plugin::TWSS] requires the <tt>twss</tt> gem
 [Robut::Plugin::Meme] requires the <tt>meme_generator</tt> gem
 [Robut::Plugin::Calc] requires the <tt>calc</tt> gem
+[Robut::Plugin::Rdio] requires the <tt>rdio</tt> and <tt>sinatra</tt> gems
 
 == The Chatfile
 
@@ -96,7 +97,7 @@ Robut includes a few plugins that we've found useful:
 [Robut::Plugin::Say] invokes the "say" command (text-to-speech). <br /> <br /> Example: <tt>@robut say this rocks</tt>
 [Robut::Plugin::Ping] responds with "pong". <br /> <br /> Example: <tt>@robut ping</tt>
 [Robut::Plugin::Later] performs the given command after waiting an arbitrary amount of time. <br /> <br /> Example: <tt>@robut in 5 minutes echo @justin wake up!</tt>
-
+[Robut::Plugin::Rdio] uses the Rdio[http://www.rdio.com] API and a simple web server to queue and play songs on Rdio. <br /> <br /> Example: <tt>@robut play ok computer</tt>
 
 == Writing custom plugins
 

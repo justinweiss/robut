@@ -3,7 +3,8 @@ require 'robut/plugin/rdio/server'
 
 # A plugin that hooks into Rdio, allowing you to queue songs from
 # HipChat. +key+ and +secret+ must be set before we can deal with any
-# Rdio commands.
+# Rdio commands. Additionally, you must call +start_server+ in your
+# Chatfile to start the Rdio web server.
 class Robut::Plugin::Rdio < Robut::Plugin::Base
 
   class << self
@@ -12,13 +13,19 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
     
     # Your Rdio API app secret
     attr_accessor :secret
+
+    # The port the Rdio web player will run on. Defaults to 4567.
+    attr_accessor :port
+
+    # The host the Rdio web player will run on. Defaults to localhost.
+    attr_accessor :host
   end
 
   # Starts a Robut::Plugin::Rdio::Server server for communicating with
   # the actual Rdio web player. You must call this in the Chatfile if
   # you plan on using this gem.
   def self.start_server
-    @server = Thread.new { Server.run! } # parameters?
+    @server = Thread.new { Server.run! :host => (host || "localhost"), :port => (port || 4567) }
   end
 
   # Queues songs into the Rdio web player. @nick play search query
