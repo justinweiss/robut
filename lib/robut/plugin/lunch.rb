@@ -32,8 +32,6 @@ class Robut::Plugin::Lunch < Robut::Plugin::Base
     end
   end
 
-  private
-
   # Stores +place+ as a new lunch place.
   def new_place(place)
     store["lunch_places"] ||= []
