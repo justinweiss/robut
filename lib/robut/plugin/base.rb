@@ -43,7 +43,8 @@ class Robut::Plugin::Base
   def nick
     connection.config.nick.split.first
   end
-  
+
+  # #nick with the @-symbol prepended
   def at_nick
     "@#{nick.downcase}"
   end
