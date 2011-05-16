@@ -25,4 +25,9 @@ class Robut::Plugin::SayTest < Test::Unit::TestCase
     assert_equal [], @plugin.system_calls
   end
   
+  def test_strips_bad_chars
+    @plugin.handle(Time.now, "@john", "@robut say it's time for $%@ more_test 123 p\"")
+    assert_equal ["say its time for more test 123 p"], @plugin.system_calls
+  end
+  
 end
