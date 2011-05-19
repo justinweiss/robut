@@ -93,7 +93,7 @@ class Robut::Connection
         rsp = plugin.handle(time, nick, message)
         break if rsp == true
       rescue => e
-        reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
+        reply("UH OH! #{plugin.class.name} just crashed!")
         if config.logger
           config.logger.error e
           config.logger.error e.backtrace.join("\n")
