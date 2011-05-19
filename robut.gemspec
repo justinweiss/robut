@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Justin Weiss"]
   s.email       = ["justin@uberweiss.org"]
-  s.homepage    = ""
+  s.homepage    = "http://rdoc.info/github/justinweiss/robut/master/frames"
   s.summary     = %q{A simple plugin-enabled HipChat bot}
   s.description = %q{A simple plugin-enabled HipChat bot}
 
