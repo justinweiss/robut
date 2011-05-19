@@ -19,6 +19,20 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
 
     # The host the Rdio web player will run on. Defaults to localhost.
     attr_accessor :host
+
+    # The playback token for +domain+. If you're accessing Rdio on
+    # localhost, you shouldn't need to change this. Otherwise,
+    # download the rdio-python plugin:
+    #
+    #   https://github.com/rdio/rdio-python
+    #
+    # and generate a new token for your domain:
+    #
+    #   ./rdio-call --consumer-key=YOUR_CONSUMER_KEY --consumer-secret=YOUR_CONSUMER_SECRET getPlaybackToken domain=YOUR_DOMAIN
+    attr_accessor :token
+    
+    # The domain associated with +token+. Defaults to localhost.
+    attr_accessor :domain
   end
 
   # Starts a Robut::Plugin::Rdio::Server server for communicating with
@@ -26,6 +40,8 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
   # you plan on using this gem.
   def self.start_server
     @server = Thread.new { Server.run! :host => (host || "localhost"), :port => (port || 4567) }
+    Server.token = self.token || "GAlNi78J_____zlyYWs5ZG02N2pkaHlhcWsyOWJtYjkyN2xvY2FsaG9zdEbwl7EHvbylWSWFWYMZwfc="
+    Server.domain = self.domain || "localhost"
   end
 
   # Queues songs into the Rdio web player. @nick play search query
