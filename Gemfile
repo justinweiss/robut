@@ -6,6 +6,8 @@ gem 'rake'
 
 group :test do
   gem 'simplecov'
+  gem 'webmock'
+  gem 'time-warp'
 end
 
 group :plugin do
@@ -14,4 +16,5 @@ group :plugin do
   gem 'rdio'
   gem 'sinatra'
   gem 'meme_generator'
+  gem 'nokogiri'
 end
