@@ -13,7 +13,7 @@ end
 group :plugin do
   gem 'calc'
   gem 'twss'
-  gem 'rdio'
+  gem 'rdio', '0.0.91' # .92 is horked
   gem 'sinatra'
   gem 'meme_generator'
   gem 'nokogiri'
