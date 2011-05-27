@@ -46,9 +46,14 @@ class Robut::Connection
   def self.configure
     self.config = OpenStruct.new
     yield config
-    self.config = OpenStruct.new(config) if config.kind_of?(Hash)
   end
 
+  # Sets the instance config to +config+, converting it into an
+  # OpenStruct if necessary.
+  def config=(config)
+    @config = config.kind_of?(Hash) ? OpenStruct.new(config) : config
+  end
+  
   # Initializes the connection. If no +config+ is passed, it defaults
   # to the class_level +config+ instance variable.
   def initialize(_config = nil)
@@ -63,13 +68,7 @@ class Robut::Connection
       Jabber.debug = true
     end
   end
-
-  # Find a jid in the roster with the given name, case-insensitively
-  def find_jid_by_name(name)
-    name = name.downcase
-    roster.items.detect {|jid, item| item.iname.downcase == name}.first
-  end
-
+  
   # Send +message+ to the room we're currently connected to, or
   # directly to the person referenced by +to+. +to+ can be either a
   # jid or the string name of the person.
@@ -94,10 +93,10 @@ class Robut::Connection
         rsp = plugin.handle(time, nick, message)
         break if rsp == true
       rescue => e
-        reply("I just pooped myself trying to run #{plugin.class.name}. AWK-WAAAARD!")
+        reply("UH OH! #{plugin.class.name} just crashed!")
         if config.logger
           config.logger.error e
-          config.logger.error e.backtrace
+          config.logger.error e.backtrace.join("\n")
         end
       end
     end
@@ -113,12 +112,16 @@ class Robut::Connection
 
     self.roster = Jabber::Roster::Helper.new(client)
     roster.wait_for_roster
-    
+
+    # Add the callback from messages that occur inside the room
     muc.on_message do |time, nick, message|
       plugins = Robut::Plugin.plugins.map { |p| p.new(self, nil) }
       handle_message(plugins, time, nick, message)
     end
 
+    # Add the callback from direct messages. Turns out the
+    # on_private_message callback doesn't do what it sounds like, so I
+    # have to go a little deeper into xmpp4r to get this working.
     client.add_message_callback(200, self) { |message|
       if !muc.from_room?(message.from) && message.type == :chat && message.body
         time = Time.now # TODO: get real timestamp? Doesn't seem like
@@ -133,11 +136,32 @@ class Robut::Connection
     }
         
     muc.join(config.room + '/' + config.nick)
+
+    trap_signals
     loop { sleep 1 }
   end
+
+  private
   
-  def plugins
-    @plugins ||= Robut::Plugin.plugins.map { |p| p.new(self) }
+  # Since we're entering an infinite loop, we have to trap TERM and
+  # INT. If something like the Rdio plugin has started a server that
+  # has already trapped those signals, we want to run those signal
+  # handlers first.
+  def trap_signals
+    old_signal_callbacks = {}
+    signal_callback = Proc.new do |signal|
+      old_signal_callbacks[signal].call if old_signal_callbacks[signal]
+      exit
+    end
+    
+    [:INT, :TERM].each do |sig|
+      old_signal_callbacks[sig] = trap(sig) { signal_callback.call(sig) }
+    end
   end
-  
+
+  # Find a jid in the roster with the given name, case-insensitively
+  def find_jid_by_name(name)
+    name = name.downcase
+    roster.items.detect {|jid, item| item.iname.downcase == name}.first
+  end
 end

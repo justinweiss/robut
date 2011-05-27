@@ -15,9 +15,10 @@
 # the time denominations it also recognizes minute, minutes, hour, hours, 
 # second, seconds.
 #
-
 class Robut::Plugin::Later < Robut::Plugin::Base
 
+  # Passes +message+ back through the plugin chain if we've been given
+  # a time to execute it later.
   def handle(time, sender_nick, message)
     if sent_to_me?(message)
       phrase = words(message).join(' ')
@@ -41,11 +42,16 @@ class Robut::Plugin::Later < Robut::Plugin::Base
       end
     end
   end
-  
+
+  private
+
+  # A regex that detects a time.
   def timer_regex
     /in (.*) (sec|secs|second|seconds|min|mins|minute|minutes|hr|hrs|hour|hours) (.*)$/
   end
-  
+
+  # Takes a time scale (secs, mins, hours, etc.) and returns the
+  # factor to convert it into seconds.
   def scale_multiplier(time_scale)
     case time_scale
     when /sec(s|ond|onds)?/
@@ -56,7 +62,8 @@ class Robut::Plugin::Later < Robut::Plugin::Base
       60 * 60
     end
   end
-  
+
+  # Asynchronously runs the given block.
   def threader
     Thread.new do
       yield

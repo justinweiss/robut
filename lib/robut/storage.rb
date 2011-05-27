@@ -1,5 +1,3 @@
-
-
-module Robut::Storage
+module Robut::Storage # :nodoc:
   autoload :Base, 'robut/storage/base'
 end

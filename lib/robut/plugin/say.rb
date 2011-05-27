@@ -7,7 +7,8 @@
 # *Requires that the "say" command is installed and in the path
 #
 class Robut::Plugin::Say < Robut::Plugin::Base
-  
+
+  # Pipes +message+ through the +say+ command
   def handle(time, sender_nick, message)
     words = words(message)
     if sent_to_me?(message) && words.first == "say"

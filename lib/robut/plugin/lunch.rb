@@ -31,21 +31,25 @@ class Robut::Plugin::Lunch < Robut::Plugin::Base
       reply "I removed \"#{place}\" from the list of lunch places"
     end
   end
-  
+
+  # Stores +place+ as a new lunch place.
   def new_place(place)
     store["lunch_places"] ||= []
     store["lunch_places"] = (store["lunch_places"] + Array(place)).uniq
   end
-  
+
+  # Removes +place+ from the list of lunch places.
   def remove_place(place)
     store["lunch_places"] ||= []
     store["lunch_places"] = store["lunch_places"] - Array(place)
   end
-  
+
+  # Returns the list of lunch places we know about.
   def places
     store["lunch_places"] ||= []
   end
-  
+
+  # Sets the list of lunch places to +v+
   def places=(v)
     store["lunch_places"] = v
   end

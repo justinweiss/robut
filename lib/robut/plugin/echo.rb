@@ -1,8 +1,8 @@
 
 # A plugin that tells robut to repeat whatever he's told.
-
 class Robut::Plugin::Echo < Robut::Plugin::Base
-  
+
+  # Responds with +message+ if the command sent to robut is 'echo'.
   def handle(time, sender_nick, message)
     words = words(message)
     if sent_to_me?(message) && words.first == 'echo'
