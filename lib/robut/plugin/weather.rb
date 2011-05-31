@@ -25,19 +25,25 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
       return
     end
 
-    # TODO: parse out day
-    if i == words.length - 1
-      reply current_conditions(location)
-    else
-      day = words[i+1..-1].join(" ").downcase
-      day = parse_day(day)
-      if day.nil?
-        reply "I don't understand \"day\""
+    day_of_week = nil
+    day_string = words[i+1..-1].join(" ").downcase
+    if day_string != ""
+      day_of_week = parse_day(day_string)
+      if day_of_week.nil?
+        reply "I don't recognize the date: \"#{day_string}\""
         return
       end
+    end    
 
-      reply forecast(location, day)
+    if bad_location?(location)
+      reply "I don't recognize the location: \"#{location}\""
       return
+    end
+
+    if day
+      reply forecast(location, day)
+    else
+      reply current_conditions(location)
     end
   end
 
@@ -94,8 +100,16 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
   end
 
   def weather_data(location = "")
-    url = "http://www.google.com/ig/api?weather=#{URI.escape(location)}"
-    doc = Nokogiri::XML(open(url))
+    @weather_data ||= {}
+    @weather_data[location] ||= begin
+      url = "http://www.google.com/ig/api?weather=#{URI.escape(location)}"
+      Nokogiri::XML(open(url))
+    end
+    @weather_data[location]
+  end
+
+  def bad_location?(location = "")
+    weather_data(location).search("forecast_information").empty?
   end
 
 end

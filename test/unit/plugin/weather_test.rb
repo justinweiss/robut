@@ -86,4 +86,15 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
     assert_equal( ["Weather for Las Vegas, NV: Mostly Cloudy, 83F"], @plugin.connection.replies )
   end
 
+  def test_handle_bad_location
+    stub_request(:any, "http://www.google.com/ig/api?weather=asdf").to_return(:body => File.open(File.expand_path("../../../fixtures/bad_location.xml", __FILE__), "r").read)
+    @plugin.handle(Time.now, "John", "asdf weather?")
+    assert_equal( ["I don't recognize the location: \"asdf\""], @plugin.connection.replies )
+  end
+
+  def test_handle_bad_date
+    @plugin.handle(Time.now, "John", "Seattle weather asdf?")
+    assert_equal( ["I don't recognize the date: \"asdf\""], @plugin.connection.replies )
+  end
+
 end
