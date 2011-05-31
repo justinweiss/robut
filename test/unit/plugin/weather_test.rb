@@ -14,6 +14,14 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
     Robut::Plugin::Weather.default_location = nil
   end
 
+  def test_handle_no_weather
+    @plugin.handle(Time.now, "John", "lunch?")
+    assert_equal( [], @plugin.connection.replies )
+
+    @plugin.handle(Time.now, "John", "?")
+    assert_equal( [], @plugin.connection.replies )
+  end
+
   def test_handle_no_location_no_default
     @plugin.handle(Time.now, "John", "weather?")
     assert_equal( ["I don't have a default location!"], @plugin.connection.replies )
@@ -24,14 +32,14 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
     stub_request(:any, "http://www.google.com/ig/api?weather=Seattle").to_return(:body => File.open(File.expand_path("../../../fixtures/seattle.xml", __FILE__), "r").read)
 
     @plugin.handle(Time.now, "John", "weather?")
-    assert_equal( ["Weather for Seattle: Mostly Cloudy, 58F"], @plugin.connection.replies )
+    assert_equal( ["Weather for Seattle, WA: Mostly Cloudy, 58F"], @plugin.connection.replies )
   end
 
   def test_handle_location
     stub_request(:any, "http://www.google.com/ig/api?weather=tacoma").to_return(:body => File.open(File.expand_path("../../../fixtures/tacoma.xml", __FILE__), "r").read)
 
     @plugin.handle(Time.now, "John", "tacoma weather?")
-    assert_equal( ["Weather for tacoma: Cloudy, 60F"], @plugin.connection.replies )
+    assert_equal( ["Weather for Tacoma, WA: Cloudy, 60F"], @plugin.connection.replies )
   end
 
   def test_no_question_mark
@@ -44,7 +52,7 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
 
     pretend_now_is(2011,"may",23,17) do
       @plugin.handle(Time.now, "John", "Seattle weather tuesday?")
-      assert_equal( ["Forecast for Seattle on Tue: Partly Cloudy, High: 67F, Low: 51F"], @plugin.connection.replies )
+      assert_equal( ["Forecast for Seattle, WA on Tue: Partly Cloudy, High: 67F, Low: 51F"], @plugin.connection.replies )
     end
   end
 
@@ -53,7 +61,7 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
 
     pretend_now_is(2011,"may",23,17) do
       @plugin.handle(Time.now, "John", "Seattle weather tomorrow?")
-      assert_equal( ["Forecast for Seattle on Tue: Partly Cloudy, High: 67F, Low: 51F"], @plugin.connection.replies )
+      assert_equal( ["Forecast for Seattle, WA on Tue: Partly Cloudy, High: 67F, Low: 51F"], @plugin.connection.replies )
     end
   end
 
@@ -62,8 +70,20 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
 
     pretend_now_is(2011,"may",23,17) do
       @plugin.handle(Time.now, "John", "Seattle weather today?")
-      assert_equal( ["Forecast for Seattle on Mon: Partly Cloudy, High: 59F, Low: 48F"], @plugin.connection.replies )
+      assert_equal( ["Forecast for Seattle, WA on Mon: Partly Cloudy, High: 59F, Low: 48F"], @plugin.connection.replies )
     end
+  end
+
+  def test_handle_multi_word_location
+    stub_request(:any, "http://www.google.com/ig/api?weather=Las%20Vegas").to_return(:body => File.open(File.expand_path("../../../fixtures/las_vegas.xml", __FILE__), "r").read)
+    @plugin.handle(Time.now, "John", "Las Vegas weather?")
+    assert_equal( ["Weather for Las Vegas, NV: Mostly Cloudy, 83F"], @plugin.connection.replies )
+  end
+
+  def test_handle_location_with_comma
+    stub_request(:any, "http://www.google.com/ig/api?weather=Las%20Vegas,%20NV").to_return(:body => File.open(File.expand_path("../../../fixtures/las_vegas.xml", __FILE__), "r").read)
+    @plugin.handle(Time.now, "John", "Las Vegas, NV weather?")
+    assert_equal( ["Weather for Las Vegas, NV: Mostly Cloudy, 83F"], @plugin.connection.replies )
   end
 
 end
