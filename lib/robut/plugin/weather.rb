@@ -17,7 +17,7 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
     i = words.index("weather")
 
     # ignore messages that don't have "weather" in them
-    return if i == -1
+    return if i.nil?
 
     location = i.zero? ? self.class.default_location : words[0..i-1].join(" ")
     if location.nil?
@@ -77,7 +77,8 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
     doc = weather_data(location)
     condition = doc.search("current_conditions condition").first["data"]
     temperature = doc.search("current_conditions temp_f").first["data"]
-    "Weather for #{location}: #{condition}, #{temperature}F"
+    normalized_location = doc.search("forecast_information city").first["data"]
+    "Weather for #{normalized_location}: #{condition}, #{temperature}F"
   end
 
   def forecast(location, day_of_week)
@@ -88,11 +89,12 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
     condition = forecast.children.detect{|c| c.name == "condition"}["data"]
     high = forecast.children.detect{|c| c.name == "high"}["data"]
     low = forecast.children.detect{|c| c.name == "low"}["data"]
-    "Forecast for #{location} on #{day_of_week}: #{condition}, High: #{high}F, Low: #{low}F"
+    normalized_location = doc.search("forecast_information city").first["data"]
+    "Forecast for #{normalized_location} on #{day_of_week}: #{condition}, High: #{high}F, Low: #{low}F"
   end
 
   def weather_data(location = "")
-    url = "http://www.google.com/ig/api?weather=#{location}"
+    url = "http://www.google.com/ig/api?weather=#{URI.escape(location)}"
     doc = Nokogiri::XML(open(url))
   end
 
