@@ -40,8 +40,8 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
       return
     end
 
-    if day
-      reply forecast(location, day)
+    if day_of_week
+      reply forecast(location, day_of_week)
     else
       reply current_conditions(location)
     end
