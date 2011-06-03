@@ -24,7 +24,7 @@ Some of the included plugins require extra gems to be installed:
 [Robut::Plugin::Meme] requires the <tt>meme_generator</tt> gem
 [Robut::Plugin::Calc] requires the <tt>calc</tt> gem
 [Robut::Plugin::Rdio] requires the <tt>rdio</tt> and <tt>sinatra</tt> gems
-[Robut::Plugin::Weather] requires <tt>nokogiri</tt>
+[Robut::Plugin::Weather] requires the <tt>nokogiri</tt> gem
 
 == The Chatfile
 
