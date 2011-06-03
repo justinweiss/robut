@@ -91,57 +91,57 @@ Robut includes a few plugins that we've found useful:
 
 [Robut::Plugin::Calc] a simple calculator.
 
-  Example: <tt>@robut calc 1 + 1 # => 2</tt>
+  @robut calc 1 + 1 # => 2
 
 
 [Robut::Plugin::Lunch] a random decider for lunch locations.
 
-  Example: <tt>@robut lunch? # => "Banh Mi!"</tt>
+  @robut lunch? # => "Banh Mi!"
 
 
 [Robut::Plugin::Meme] an interface to memegenerator.net. 
 
-  Example: <tt>@robut meme Y_U_NO FIX THE BUILD?</tt>
+  @robut meme Y_U_NO FIX THE BUILD?
 
 
 [Robut::Plugin::Sayings] a simple regex listener and responder. 
 
-  Example: <tt>You're the worst robot ever, @robut. # => I know. </tt>
+  You're the worst robot ever, @robut. # => I know.
 
 
 [Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate. 
 
-  Example: <tt>well hurry up, you're not going fast enough # => "That's what she said!" </tt>
+  well hurry up, you're not going fast enough # => "That's what she said!"
 
 
 [Robut::Plugin::Echo] echo back whatever it gets.
 
-  Example: <tt>@robut echo hello word</tt>
+  @robut echo hello word
 
 
 [Robut::Plugin::Say] invokes the "say" command (text-to-speech). 
 
-  Example: <tt>@robut say this rocks</tt>
+  @robut say this rocks
 
 
 [Robut::Plugin::Ping] responds with "pong". 
 
-  Example: <tt>@robut ping</tt>
+  @robut ping # => "pong"
 
 
 [Robut::Plugin::Later] performs the given command after waiting an arbitrary amount of time.
 
-  Example: <tt>@robut in 5 minutes echo @justin wake up!</tt>
+  @robut in 5 minutes echo @justin wake up! # => (5 minutes later) "@justin wake up!"
 
 
 [Robut::Plugin::Rdio] uses the Rdio[http://www.rdio.com] API and a simple web server to queue and play songs on Rdio.
 
-  Example: <tt>@robut play ok computer</tt>
+  @robut play ok computer
 
 
 [Robut::Plugin::Weather] uses Google Weather to fetch for the weather for a given location and day.
 
-  Example: <tt>@robut seattle weather saturday? # => "Forecast for Seattle, WA on Sat: Sunny, High: 77F, Low: 55F"</tt>
+  @robut seattle weather saturday? # => "Forecast for Seattle, WA on Sat: Sunny, High: 77F, Low: 55F"
 
 
 == Writing custom plugins
