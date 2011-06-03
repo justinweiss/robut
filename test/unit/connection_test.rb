@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SimplePlugin
+class SimplePlugin < Robut::Plugin::Base
   attr_accessor :run
 
   def initialize(*args)

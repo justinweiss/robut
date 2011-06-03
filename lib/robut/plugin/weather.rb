@@ -10,7 +10,7 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
 
   def handle(time, sender_nick, message)
     # ignore messages that don't end in ?
-    return unless message[message.length - 1] == "?"
+    return unless message[message.length - 1, 1] == "?"
     message = message[0..message.length - 2]
 
     words = words(message)
