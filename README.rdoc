@@ -116,12 +116,12 @@ Robut includes a few plugins that we've found useful:
 
 [Robut::Plugin::Echo] echo back whatever it gets.
 
-  @robut echo hello word
+  @robut echo hello world # => "hello world"
 
 
 [Robut::Plugin::Say] invokes the "say" command (text-to-speech). 
 
-  @robut say this rocks
+  @robut say this rocks # (make sure robut is running on a machine with speakers :)
 
 
 [Robut::Plugin::Ping] responds with "pong". 
