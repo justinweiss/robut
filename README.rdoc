@@ -20,10 +20,11 @@ Others listen to everything, and don't require an @reply.
 
 Some of the included plugins require extra gems to be installed:
 
-[Robut::Plugin::TWSS] requires the <tt>twss</tt> gem
-[Robut::Plugin::Meme] requires the <tt>meme_generator</tt> gem
-[Robut::Plugin::Calc] requires the <tt>calc</tt> gem
-[Robut::Plugin::Rdio] requires the <tt>rdio</tt> and <tt>sinatra</tt> gems
+[Robut::Plugin::TWSS] requires the <tt>twss</tt> gem.
+[Robut::Plugin::Meme] requires the <tt>meme_generator</tt> gem.
+[Robut::Plugin::Calc] requires the <tt>calc</tt> gem.
+[Robut::Plugin::Rdio] requires the <tt>rdio</tt> and <tt>sinatra</tt> gems.
+[Robut::Plugin::Weather] requires the <tt>nokogiri</tt> gem.
 
 == The Chatfile
 
@@ -88,16 +89,60 @@ This block usually goes at the end of the Chatfile.
 
 Robut includes a few plugins that we've found useful:
 
-[Robut::Plugin::Calc] a simple calculator. <br /> <br /> Example: <tt>@robut calc 1 + 1 # => 2</tt>
-[Robut::Plugin::Lunch] a random decider for lunch locations. <br /> <br /> Example: <tt>@robut lunch? # => "Banh Mi!"</tt>
-[Robut::Plugin::Meme] an interface to memegenerator.net. <br /> <br /> Example: <tt>@robut meme Y_U_NO FIX THE BUILD?</tt>
-[Robut::Plugin::Sayings] a simple regex listener and responder. <br /> <br /> Example: <tt>You're the worst robot ever, @robut. # => I know. </tt>
-[Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate. <br /> <br /> Example: <tt>well hurry up, you're not going fast enough # => "That's what she said!" </tt>
-[Robut::Plugin::Echo] echo back whatever it gets. <br /> <br /> Example: <tt>@robut echo hello word</tt>
-[Robut::Plugin::Say] invokes the "say" command (text-to-speech). <br /> <br /> Example: <tt>@robut say this rocks</tt>
-[Robut::Plugin::Ping] responds with "pong". <br /> <br /> Example: <tt>@robut ping</tt>
-[Robut::Plugin::Later] performs the given command after waiting an arbitrary amount of time. <br /> <br /> Example: <tt>@robut in 5 minutes echo @justin wake up!</tt>
-[Robut::Plugin::Rdio] uses the Rdio[http://www.rdio.com] API and a simple web server to queue and play songs on Rdio. <br /> <br /> Example: <tt>@robut play ok computer</tt>
+[Robut::Plugin::Calc] a simple calculator.
+
+  @robut calc 1 + 1 # => 2
+
+
+[Robut::Plugin::Lunch] a random decider for lunch locations.
+
+  @robut lunch? # => "Banh Mi!"
+
+
+[Robut::Plugin::Meme] an interface to memegenerator.net. 
+
+  @robut meme Y_U_NO FIX THE BUILD?
+
+
+[Robut::Plugin::Sayings] a simple regex listener and responder. 
+
+  You're the worst robot ever, @robut. # => I know.
+
+
+[Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate. 
+
+  well hurry up, you're not going fast enough # => "That's what she said!"
+
+
+[Robut::Plugin::Echo] echo back whatever it gets.
+
+  @robut echo hello world # => "hello world"
+
+
+[Robut::Plugin::Say] invokes the "say" command (text-to-speech). 
+
+  @robut say this rocks # (make sure robut is running on a machine with speakers :)
+
+
+[Robut::Plugin::Ping] responds with "pong". 
+
+  @robut ping # => "pong"
+
+
+[Robut::Plugin::Later] performs the given command after waiting an arbitrary amount of time.
+
+  @robut in 5 minutes echo @justin wake up! # => (5 minutes later) "@justin wake up!"
+
+
+[Robut::Plugin::Rdio] uses the Rdio[http://www.rdio.com] API and a simple web server to queue and play songs on Rdio.
+
+  @robut play ok computer
+
+
+[Robut::Plugin::Weather] uses Google Weather to fetch for the weather for a given location and day.
+
+  @robut seattle weather saturday? # => "Forecast for Seattle, WA on Sat: Sunny, High: 77F, Low: 55F"
+
 
 == Writing custom plugins
 
