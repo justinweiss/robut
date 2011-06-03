@@ -110,13 +110,21 @@ in its class definition.
 
 == Contributing
 
-Once you've made your great commits:
+To test your changes:
+
+1. Install [Bundler](http://gembundler.com/)
+2. Run `bundle install`
+3. Make your changes and run `bundle exec ruby -Ilib bin/robut ~/MyTestingChatfile`
+4. Add tests and verify by running `bundle exec rake test`
+
+Once your changes are ready:
 
 1. Fork robut
-2. Create a topic branch - git checkout -b my_branch
-3. Push to your branch - git push origin my_branch
-4. Send me a pull request
-5. That's it!
+2. Create a topic branch: `git checkout -b my_branch`
+3. Commit your changes
+4. Push to your branch: `git push origin my_branch`
+5. Send me a pull request
+6. That's it!
 
 == Todo
 
