@@ -9,12 +9,21 @@ require 'shellwords'
 #
 #
 # Valid use:
-
-#   alias this "something long"
-#   alias "this thing" "something long"
-#   alias this something_long
-
-
+#
+#   @robut alias this "something long"
+#   @robut alias "this thing" "something long"
+#   @robut alias this something_long
+#
+# Listing all aliases
+#
+#   @robut aliases
+#
+# Removing aliases
+#
+#   @robut remove alias "this alias"
+#   @robut remove alias this
+#   @robut remove clear aliases # removes everything
+#
 class Robut::Plugin::Alias < Robut::Plugin::Base
 
   # Perform the calculation specified in +message+, and send the
@@ -25,11 +34,13 @@ class Robut::Plugin::Alias < Robut::Plugin::Base
       fake_message Time.now, sender_nick, new_message
     elsif sent_to_me?(message)
       message = without_nick message
-      if message =~ /remove alias (.*)/
+      if message =~ /^remove alias (.*)/
         # Remove the alias
         key = parse_alias_key($1)
         remove_alias key
-      elsif message =~ /alias (.*)/
+      elsif message =~ /^clear aliases$/
+        self.aliases = {}
+      elsif message =~ /^alias (.*)/
         # Create a new alias
         message = $1
         key, value = parse_alias message

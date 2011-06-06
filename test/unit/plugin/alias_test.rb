@@ -23,6 +23,11 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
     assert_equal "@robut echo that", message[2]
   end
   
+  def test_doesnt_alias_when_it_shouldnt
+    @plugin.handle(Time.now, "@john", "@robut somthing alias w weather?")
+    assert @plugin.aliases.empty?
+  end  
+  
   def test_can_alias_with_quotes
     @plugin.handle(Time.now, "@john", '@robut alias "long string" "some other long string"')
     assert_equal 'some other long string', @plugin.aliases['long string']
@@ -48,7 +53,7 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
     assert_equal({'this' => 'that'}, @plugin.aliases)
   end
   
-  def test_remove_alias_hanldes_quotes
+  def test_remove_alias_handles_quotes
     @plugin.handle(Time.now, "@john", '@robut alias "long string" "that"')
     @plugin.handle(Time.now, "@john", '@robut remove alias "long string"')
     assert @plugin.aliases.empty?
@@ -59,6 +64,12 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
     @plugin.handle(Time.now, "@john", "@robut alias something something else")
     @plugin.handle(Time.now, "@john", "@robut aliases")
     assert_equal ["this => that\nsomething => something else"], @plugin.connection.replies
+  end
+  
+  def test_can_clear_aliases
+    @plugin.handle(Time.now, "@john", "@robut alias this that")
+    @plugin.handle(Time.now, "@john", "@robut clear aliases")
+    assert_equal({}, @plugin.aliases)
   end
   
 end
