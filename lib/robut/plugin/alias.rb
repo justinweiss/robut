@@ -38,8 +38,10 @@ class Robut::Plugin::Alias < Robut::Plugin::Base
         # Remove the alias
         key = parse_alias_key($1)
         remove_alias key
+        return true
       elsif message =~ /^clear aliases$/
         self.aliases = {}
+        return true
       elsif message =~ /^alias (.*)/
         # Create a new alias
         message = $1
