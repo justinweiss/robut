@@ -24,6 +24,8 @@ require 'shellwords'
 #   @robut remove alias this
 #   @robut remove clear aliases # removes everything
 #
+# Note: you probably want the Alias plugin as one of the first things
+# in the plugin array (since plugins are executed in order).
 class Robut::Plugin::Alias < Robut::Plugin::Base
 
   # Perform the calculation specified in +message+, and send the
