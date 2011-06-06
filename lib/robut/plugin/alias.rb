@@ -34,6 +34,7 @@ class Robut::Plugin::Alias < Robut::Plugin::Base
         message = $1
         key, value = parse_alias message
         store_alias key, value
+        return true # hault plugin execution chain
       elsif words(message).first == 'aliases'
         # List all aliases
         m = []
