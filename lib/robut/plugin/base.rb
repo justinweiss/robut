@@ -38,6 +38,17 @@ class Robut::Plugin::Base
     command = command.downcase if command
     message.split.reject {|word| word.downcase == reply || word.downcase == command }
   end
+  
+  # Removes the first word in message if it is a reference to the bot's nick
+  # Given "@robut do this thing", Returns "do this thing"
+  def without_nick(message)
+    possible_nick, command = message.split(' ', 2)
+    if possible_nick == at_nick
+      command
+    else
+      message
+    end
+  end
 
   # The bot's nickname, for @-replies.
   def nick
@@ -60,6 +71,12 @@ class Robut::Plugin::Base
   # Robut::Plugin.plugins
   def handle(time, sender_nick, message)
     raise NotImplementedError, "Implement me in #{self.class.name}!"
+  end
+  
+  def fake_message(time, sender_nick, msg)
+    # TODO: ensure this connection is threadsafe
+    plugins = Robut::Plugin.plugins.map { |p| p.new(connection, private_sender) }
+    connection.handle_message(plugins, time, sender_nick, msg)
   end
   
   # Accessor for the store instance

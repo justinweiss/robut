@@ -143,6 +143,11 @@ Robut includes a few plugins that we've found useful:
 
   @robut seattle weather saturday? # => "Forecast for Seattle, WA on Sat: Sunny, High: 77F, Low: 55F"
 
+[Robut::Plugin::Alias] creates aliases to other robut commands.
+
+  @robut alias "cowboy" "@robut play bon jovi wanted dead or alive" # Cuz somtimes you need it.
+  @robut alias w weather? # less typing for common stuff
+
 
 == Writing custom plugins
 

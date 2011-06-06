@@ -134,9 +134,9 @@ class Robut::Connection
         false
       end
     }
-        
+    
     muc.join(config.room + '/' + config.nick)
-
+    
     trap_signals
     loop { sleep 1 }
   end
