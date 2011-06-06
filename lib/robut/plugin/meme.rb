@@ -17,10 +17,10 @@ class Robut::Plugin::Meme < Robut::Plugin::Base
   # Send message to the specified meme generator. If the meme requires
   # more than one line of text, lines should be separated with a semicolon.
   def handle(time, sender_nick, message)
-    return if not sent_to_me?(message)
+    return unless sent_to_me?(message)
     words = words(message)
     command = words.shift.downcase
-    return if command != 'meme'
+    return unless command == 'meme'
     meme = words.first.upcase
 
     # The meme_generator gem (1.9) is currently broken, so return an error
