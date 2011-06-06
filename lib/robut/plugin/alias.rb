@@ -51,6 +51,7 @@ class Robut::Plugin::Alias < Robut::Plugin::Base
         m = []
         aliases.each { |key, value| m << "#{key} => #{value}" }
         reply m.join("\n")
+        return true
       end
     end
   end
