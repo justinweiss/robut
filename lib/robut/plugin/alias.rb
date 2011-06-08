@@ -52,8 +52,8 @@ class Robut::Plugin::Alias < Robut::Plugin::Base
         return true # hault plugin execution chain
       elsif words(message).first == 'aliases'
         # List all aliases
-        m = []
-        aliases.each { |key, value| m << "#{key} => #{value}" }
+        m, a = [], aliases # create reference to avoid going to the store every time
+        a.keys.sort.each { |key| m << "#{key} => #{a[key]}" }
         reply m.join("\n")
         return true
       end

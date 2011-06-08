@@ -63,7 +63,7 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
     @plugin.handle(Time.now, "@john", "@robut alias this that")
     @plugin.handle(Time.now, "@john", "@robut alias something something else")
     @plugin.handle(Time.now, "@john", "@robut aliases")
-    assert_equal ["this => that\nsomething => something else"], @plugin.connection.replies
+    assert_equal ["something => something else\nthis => that"], @plugin.connection.replies
   end
   
   def test_can_clear_aliases
