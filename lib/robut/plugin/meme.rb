@@ -2,12 +2,13 @@ require 'meme'
 
 # A simple plugin that wraps meme_generator. Requires the
 # 'meme_generator' gem.
-class Robut::Plugin::Meme < Robut::Plugin::Base
+class Robut::Plugin::Meme
+  include Robut::Plugin
 
   # This plugin is activated when robut is sent a message starting
   # with the name of a meme. The list of generators can be discovered
   # by running
-  # 
+  #
   #   @robut meme list
   #
   # from the command line. Example:

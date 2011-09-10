@@ -1,5 +1,6 @@
 # A simple regex => response plugin.
-class Robut::Plugin::Sayings < Robut::Plugin::Base
+class Robut::Plugin::Sayings
+  include Robut::Plugin
 
   class << self
     # A list of arrays. The first element is a regex, the second is

@@ -1,8 +1,9 @@
 require 'sinatra'
 require 'json'
 
-class Robut::Plugin::Rdio < Robut::Plugin::Base
-  
+class Robut::Plugin::Rdio
+  include Robut::Plugin
+
   # A simple server to communicate new Rdio sources to the Web
   # Playback API. The client will update
   # Robut::Plugin::Rdio::Server.queue with any new sources, and a call
@@ -10,7 +11,7 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
   class Server < Sinatra::Base
 
     set :root, File.dirname(__FILE__)
-    
+
     class << self
       # A list of items that haven't been fetched by the web playback
       # API yet.

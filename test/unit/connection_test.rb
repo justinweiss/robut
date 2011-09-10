@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class SimplePlugin < Robut::Plugin::Base
+class SimplePlugin
+  include Robut::Plugin
   attr_accessor :run
 
   def initialize(*args)
@@ -13,7 +14,9 @@ class SimplePlugin < Robut::Plugin::Base
   end
 end
 
-class ReplyToUserPlugin < Robut::Plugin::Base
+class ReplyToUserPlugin
+  include Robut::Plugin
+
   def initialize(*args)
     super(*args)
   end
@@ -23,7 +26,9 @@ class ReplyToUserPlugin < Robut::Plugin::Base
   end
 end
 
-class ReplyToRoomPlugin < Robut::Plugin::Base
+class ReplyToRoomPlugin
+  include Robut::Plugin
+
   def initialize(*args)
     super(*args)
   end
@@ -39,7 +44,7 @@ class ReplyMock
   def initialize
     @messages = []
   end
-  
+
   def send(message)
     @messages << message
   end
@@ -96,7 +101,7 @@ class ConnectionTest < Test::Unit::TestCase
           })
         }
     })
-    
+
     @connection.handle_message(plugins(@connection), Time.now, 'justin WEISS', 'Test Message')
     message = @connection.client.messages.first
     assert_equal(justin, message.to.to_s)
@@ -119,5 +124,5 @@ class ConnectionTest < Test::Unit::TestCase
   def plugins(connection, sender = nil)
     Robut::Plugin.plugins.map { |p| p.new(connection, sender) }
   end
-  
+
 end

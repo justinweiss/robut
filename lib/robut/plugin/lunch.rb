@@ -1,9 +1,10 @@
 # Where should we go to lunch today?
-class Robut::Plugin::Lunch < Robut::Plugin::Base
+class Robut::Plugin::Lunch
+  include Robut::Plugin
 
   # Replies with a random string selected from +places+.
   def handle(time, sender_nick, message)
-    words = words(message)    
+    words = words(message)
     phrase = words.join(' ')
     # lunch?
     if phrase =~ /(lunch|food)\?/i
@@ -53,5 +54,5 @@ class Robut::Plugin::Lunch < Robut::Plugin::Base
   def places=(v)
     store["lunch_places"] = v
   end
-  
+
 end

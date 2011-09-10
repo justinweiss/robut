@@ -2,7 +2,8 @@ require 'open-uri'
 require 'nokogiri'
 
 # What's the current weather forecast?
-class Robut::Plugin::Weather < Robut::Plugin::Base
+class Robut::Plugin::Weather
+  include Robut::Plugin
 
   class << self
     attr_accessor :default_location
@@ -33,7 +34,7 @@ class Robut::Plugin::Weather < Robut::Plugin::Base
         reply "I don't recognize the date: \"#{day_string}\""
         return
       end
-    end    
+    end
 
     if bad_location?(location)
       reply "I don't recognize the location: \"#{location}\""

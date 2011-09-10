@@ -26,7 +26,8 @@ require 'shellwords'
 #
 # Note: you probably want the Alias plugin as one of the first things
 # in the plugin array (since plugins are executed in order).
-class Robut::Plugin::Alias < Robut::Plugin::Base
+class Robut::Plugin::Alias
+  include Robut::Plugin
 
   # Perform the calculation specified in +message+, and send the
   # result back.
@@ -59,40 +60,40 @@ class Robut::Plugin::Alias < Robut::Plugin::Base
       end
     end
   end
-  
+
   # Given a message, returns what it is aliased to (or nil)
   def get_alias(msg)
     (store['aliases'] || {})[msg]
   end
-  
+
   def store_alias(key, value)
     aliases[key] = value
     store['aliases'] = aliases
   end
-  
+
   def remove_alias(key)
     new_aliases = aliases
     new_aliases.delete(key)
     store['aliases'] = new_aliases
   end
-  
+
   def aliases
     store['aliases'] ||= {}
   end
-  
+
   def aliases=(v)
     store['aliases'] = v
   end
-  
+
   # Returns alias and command
   def parse_alias(str)
     r = Shellwords.shellwords str
     return r[0], r[1] if r.length == 2
     return r[0], r[1..-1].join(' ')
   end
-  
+
   def parse_alias_key(str)
     Shellwords.shellwords(str).join(' ')
   end
-    
+
 end
