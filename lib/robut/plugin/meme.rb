@@ -29,9 +29,9 @@ class Robut::Plugin::Meme
     return
 
     if meme == 'LIST'
-      reply("Memes available: #{Meme::GENERATORS.keys.join(', ')}")
-    elsif Meme::GENERATORS.has_key?(meme)
-      g = Meme.new(meme)
+      reply("Memes available: #{::Meme::GENERATORS.keys.join(', ')}")
+    elsif ::Meme::GENERATORS.has_key?(meme)
+      g = ::Meme.new(meme)
       line1, line2 = words.join(' ').split(';')
       reply(g.generate(line1, line2))
     else

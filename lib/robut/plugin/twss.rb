@@ -9,6 +9,6 @@ class Robut::Plugin::TWSS
   # +message+. Strips out any reference to our nick in +message+
   # before it stuffs +message+ into the gem.
   def handle(time, sender_nick, message)
-    reply("That's what she said!") if TWSS(words(message).join(" "))
+    reply("That's what she said!") if ::TWSS.classify(words(message).join(" "))
   end
 end

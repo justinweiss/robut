@@ -11,7 +11,7 @@ class Robut::Plugin::Calc
     if sent_to_me?(message) && words(message).first == 'calc'
       calculation = words(message, 'calc').join(' ')
       begin
-        reply("#{calculation} = #{Calc.evaluate(calculation)}")
+        reply("#{calculation} = #{::Calc.evaluate(calculation)}")
       rescue
         reply("Can't calculate that.")
       end

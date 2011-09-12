@@ -70,7 +70,7 @@ class Robut::Plugin::Rdio
   # 'track', it only searches tracks, same for 'album'. Otherwise,
   # matches both albums and tracks.
   def search(words)
-    api = Rdio::Api.new(self.class.key, self.class.secret)
+    api = ::Rdio::Api.new(self.class.key, self.class.secret)
 
     if words[1] == "album"
       query_string = words[2..-1].join(' ')
