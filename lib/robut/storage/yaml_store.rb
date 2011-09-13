@@ -39,9 +39,9 @@ class Robut::Storage::YamlStore < Robut::Storage::Base
     # we don't have a file set.
     def persist!
       raise "Robut::Storage::YamlStore.file must be set" unless file
-      f = File.open(file, "w")
-      f.puts internal.to_yaml
-      f.close
+      File.open(file, "w") do |f|
+        f.puts internal.to_yaml
+      end
     end
 
     def load_from_file
