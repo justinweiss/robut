@@ -7,7 +7,7 @@ class Robut::Storage::YamlStoreTest < Test::Unit::TestCase
     @store = Robut::Storage::YamlStore
     @store.file = new_yaml_file
   end
-  
+
   def teardown
     File.delete new_yaml_file if File.exists?(new_yaml_file)
   end
@@ -16,27 +16,32 @@ class Robut::Storage::YamlStoreTest < Test::Unit::TestCase
     assert_equal 'in the trunk', (@store['junk'] = 'in the trunk')
     assert_equal 'in the trunk', @store['junk']
   end
-  
+
+  def test_load_an_empty_file
+    FileUtils.touch(new_yaml_file)
+    assert_equal nil, @store['non-exising-key']
+  end
+
   def test_read_from_file
     @store.file = test_yaml_file
     assert_equal 'bar', @store['foo']
   end
-  
+
   def test_persists_to_file
     @store['pot'] = 'roast'
     assert File.exists?(new_yaml_file)
     yaml = YAML.load_file(new_yaml_file)
     assert_equal 'roast', yaml['pot']
   end
-  
+
   private
-  
+
   def test_yaml_file
     File.join(File.dirname(__FILE__), 'yaml_test.yml')
   end
-  
+
   def new_yaml_file
     File.join(File.dirname(__FILE__), 'new_yaml_test.yml')
   end
-  
+
 end
