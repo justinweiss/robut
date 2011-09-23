@@ -21,7 +21,6 @@ Others listen to everything, and don't require an @reply.
 Some of the included plugins require extra gems to be installed:
 
 [Robut::Plugin::TWSS] requires the <tt>twss</tt> gem.
-[Robut::Plugin::Meme] requires the <tt>meme_generator</tt> gem.
 [Robut::Plugin::Calc] requires the <tt>calc</tt> gem.
 [Robut::Plugin::Rdio] requires the <tt>rdio</tt> and <tt>sinatra</tt> gems.
 [Robut::Plugin::Weather] requires the <tt>nokogiri</tt> gem.
@@ -99,15 +98,14 @@ Robut includes a few plugins that we've found useful:
   @robut lunch? # => "Banh Mi!"
 
 
-[Robut::Plugin::Meme] an interface to memegenerator.net. 
+[Robut::Plugin::Meme] an interface to memecaptain. 
 
-  @robut meme Y_U_NO FIX THE BUILD?
+  @robut meme all_the_things drink; all the beer
 
 
 [Robut::Plugin::Sayings] a simple regex listener and responder. 
 
   You're the worst robot ever, @robut. # => I know.
-
 
 [Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate. 
 
@@ -148,14 +146,17 @@ Robut includes a few plugins that we've found useful:
   @robut alias "cowboy" "@robut play bon jovi wanted dead or alive" # Cuz somtimes you need it.
   @robut alias w weather? # less typing for common stuff
 
+[Robut::Plugin::Help] lists usage for all the plugins loaded into robut
+
+  @robut help # => command usage
 
 == Writing custom plugins
 
-You can supply your own plugins to Robut. To create a plugin, subclass
-Robut::Plugin::Base and implement the <tt>handle(time, sender_nick,
-message)</tt> to perform any plugin-specific logic.
+You can supply your own plugins to Robut. To create a plugin, include
+the Robut::Plugin module and implement the <tt>handle(time,
+sender_nick, message)</tt> to perform any plugin-specific logic.
 
-Robut::Plugin::Base provides a few helper methods that are documented
+Robut::Plugin provides a few helper methods that are documented
 in its class definition.
 
 == Contributing

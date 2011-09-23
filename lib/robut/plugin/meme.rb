@@ -1,7 +1,6 @@
 require 'cgi'
 
-# A simple plugin that wraps meme_generator. Requires the
-# 'meme_generator' gem.
+# A simple plugin that wraps memecaptain.
 class Robut::Plugin::Meme
   include Robut::Plugin
 
