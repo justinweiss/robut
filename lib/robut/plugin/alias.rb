@@ -29,6 +29,16 @@ require 'shellwords'
 class Robut::Plugin::Alias
   include Robut::Plugin
 
+  # Returns a description of how to use this plugin
+  def usage
+    [
+      "#{at_nick} alias <words> <expansion> - when #{nick} sees <words>, pretend it saw <expansion> instead",
+      "#{at_nick} aliases - show all aliases",
+      "#{at_nick} remove alias <words> - remove <words> as an alias",
+      "#{at_nick} clear aliases - remove all aliases"
+    ]
+  end
+
   # Perform the calculation specified in +message+, and send the
   # result back.
   def handle(time, sender_nick, message)

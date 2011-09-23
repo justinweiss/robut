@@ -18,6 +18,11 @@
 class Robut::Plugin::Later
   include Robut::Plugin
 
+  # Returns a description of how to use this plugin
+  def usage
+    "#{at_nick} in <number> <mins|hrs|secs> <command> - sends <command> to #{nick} after the specified interval"
+  end
+  
   # Passes +message+ back through the plugin chain if we've been given
   # a time to execute it later.
   def handle(time, sender_nick, message)

@@ -8,6 +8,11 @@
 class Robut::Plugin::Say
   include Robut::Plugin
 
+  # Returns a description of how to use this plugin
+  def usage
+    "#{at_nick} say <words> - uses Mac OS X's 'say' command to speak <words>"
+  end
+  
   # Pipes +message+ through the +say+ command
   def handle(time, sender_nick, message)
     words = words(message)

@@ -2,6 +2,10 @@
 class Robut::Plugin::Ping
   include Robut::Plugin
 
+  def usage
+    "#{at_nick} ping - responds 'pong'"
+  end
+
   # Responds "pong" if +message+ is "ping"
   def handle(time, sender_nick, message)
     words = words(message)

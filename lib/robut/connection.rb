@@ -88,6 +88,10 @@ class Robut::Connection
 
   # Sends the chat message +message+ through +plugins+.
   def handle_message(plugins, time, nick, message)
+    # ignore all messages sent by robut. If you really want robut to
+    # reply to itself, you can use +fake_message+.
+    return if nick == config.nick
+    
     plugins.each do |plugin|
       begin
         rsp = plugin.handle(time, nick, message)

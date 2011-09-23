@@ -45,6 +45,15 @@ class Robut::Plugin::Rdio
     Server.domain = self.domain || "localhost"
   end
 
+  # Returns a description of how to use this plugin
+  def usage
+    [
+      "#{at_nick} play <song> - queues <song> for playing",
+      "#{at_nick} play album <album> - queues <album> for playing",
+      "#{at_nick} play track <track> - queues <track> for playing"
+    ]
+  end
+
   # Queues songs into the Rdio web player. @nick play search query
   # will queue the first search result matching 'search query' into
   # the web player. It can be an artist, album, or song.

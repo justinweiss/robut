@@ -83,6 +83,11 @@ module Robut::Plugin
     raise NotImplementedError, "Implement me in #{self.class.name}!"
   end
 
+  # Returns a list of messages describing the commands this plugin
+  # handles.
+  def usage
+  end
+
   def fake_message(time, sender_nick, msg)
     # TODO: ensure this connection is threadsafe
     plugins = Robut::Plugin.plugins.map { |p| p.new(connection, private_sender) }

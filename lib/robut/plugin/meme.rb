@@ -5,6 +5,14 @@ require 'meme'
 class Robut::Plugin::Meme
   include Robut::Plugin
 
+  # Returns a description of how to use this plugin
+  def usage
+    [
+      "#{at_nick} meme list - lists all the memes that #{nick} knows about",
+      "#{at_nick} meme <meme> <line1>;<line2> - responds with a link to a generated <meme> image using <line1> and <line2>"
+    ]
+  end
+
   # This plugin is activated when robut is sent a message starting
   # with the name of a meme. The list of generators can be discovered
   # by running

@@ -14,6 +14,11 @@ class Robut::Plugin::Sayings
   end
   self.sayings = []
 
+  # Returns a description of how to use this plugin
+  def usage
+    "#{at_nick} <words> - if <words> matches a regular expression defined in the Chatfile, responds with the specified response"
+  end
+
   # For each element in sayings, creates a regex out of the first
   # element, tries to match +message+ to it, and replies with the
   # second element if it found a match. Robut::Plugin::Sayings will

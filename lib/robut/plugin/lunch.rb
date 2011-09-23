@@ -2,6 +2,16 @@
 class Robut::Plugin::Lunch
   include Robut::Plugin
 
+  # Returns a description of how to use this plugin
+  def usage
+    [
+      "lunch? / food? - #{nick} will suggest a place to go eat",
+      "#{at_nick} lunch places - lists all the lunch places #{nick} knows about",
+      "#{at_nick} new lunch place <place> - tells #{nick} about a new place to eat",
+      "#{at_nick} remove lunch place <place> - tells #{nick} not to suggest <place> anymore"
+    ]
+  end
+
   # Replies with a random string selected from +places+.
   def handle(time, sender_nick, message)
     words = words(message)

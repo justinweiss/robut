@@ -5,6 +5,11 @@ require 'calc'
 class Robut::Plugin::Calc
   include Robut::Plugin
 
+  # Returns a description of how to use this plugin
+  def usage
+    "#{at_nick} calc <calculation> - replies with the result of <calculation>"
+  end
+  
   # Perform the calculation specified in +message+, and send the
   # result back.
   def handle(time, sender_nick, message)

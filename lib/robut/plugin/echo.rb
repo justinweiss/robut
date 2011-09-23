@@ -11,4 +11,9 @@ class Robut::Plugin::Echo
     end
   end
 
+  # Returns a description of how to use this plugin
+  def usage
+    "#{at_nick} echo <message> - replies to the channel with <message>"
+  end
+
 end
