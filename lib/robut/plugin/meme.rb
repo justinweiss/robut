@@ -1,9 +1,25 @@
-require 'meme'
+require 'cgi'
 
 # A simple plugin that wraps meme_generator. Requires the
 # 'meme_generator' gem.
 class Robut::Plugin::Meme
   include Robut::Plugin
+
+  MEMES = {
+    'bear_grylls' => 'http://memecaptain.com/bear_grylls.jpg',
+    'insanity_wolf' => 'http://memecaptain.com/insanity_wolf.jpg',
+    'most_interesting' => 'http://memecaptain.com/most_interesting.jpg',
+    'philosoraptor' => 'http://memecaptain.com/philosoraptor.jpg',
+    'scumbag_steve' => 'http://memecaptain.com/scumbag_steve.jpg',
+    'town_crier' => 'http://memecaptain.com/town_crier.jpg',
+    'troll_face' => 'http://memecaptain.com/troll_face.jpg',
+    'y_u_no' => 'http://memecaptain.com/y_u_no.jpg',
+    'yao_ming' => 'http://memecaptain.com/yao_ming.jpg',
+    'business_cat' => 'http://memecaptain.com/business_cat.jpg',
+    'all_the_things' => 'http://memecaptain.com/all_the_things.jpg',
+    'fry' => 'http://memecaptain.com/fry.png',
+    'sap' => 'http://memecaptain.com/sap.jpg'
+  }
 
   # Returns a description of how to use this plugin
   def usage
@@ -30,18 +46,17 @@ class Robut::Plugin::Meme
     words = words(message)
     command = words.shift.downcase
     return unless command == 'meme'
-    meme = words.first.upcase
+    meme = words.first
 
-    # The meme_generator gem (1.9) is currently broken, so return an error
-    reply('Meme plugin is currently broken: https://github.com/justinweiss/robut/issues/8 :(')
-    return
-
-    if meme == 'LIST'
-      reply("Memes available: #{::Meme::GENERATORS.keys.join(', ')}")
-    elsif ::Meme::GENERATORS.has_key?(meme)
-      g = ::Meme.new(meme)
-      line1, line2 = words.join(' ').split(';')
-      reply(g.generate(line1, line2))
+    if meme == 'list'
+      reply("Memes available: #{MEMES.keys.join(', ')}")
+    elsif MEMES[meme]
+      words.shift
+      url = CGI.escape(MEMES[meme])
+      line1, line2 = words.join(' ').split(';').map { |line| CGI.escape(line)}
+      meme_url = "http://memecaptain.com/i?u=#{url}&tt=#{line1}"
+      meme_url += "&tb=#{line2}" if line2
+      reply(meme_url)
     else
       reply("Meme not found: #{meme}")
     end
