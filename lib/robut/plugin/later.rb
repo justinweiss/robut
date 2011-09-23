@@ -12,10 +12,11 @@
 #    @robut in <number> <mins|hrs|secs> [command]
 #
 # Where command is the message you want to send to @robut in the future.  For
-# the time denominations it also recognizes minute, minutes, hour, hours, 
+# the time denominations it also recognizes minute, minutes, hour, hours,
 # second, seconds.
 #
-class Robut::Plugin::Later < Robut::Plugin::Base
+class Robut::Plugin::Later
+  include Robut::Plugin
 
   # Passes +message+ back through the plugin chain if we've been given
   # a time to execute it later.
@@ -26,11 +27,11 @@ class Robut::Plugin::Later < Robut::Plugin::Base
         count = $1.to_i
         scale = $2
         future_message =  at_nick + ' ' + $3
-        
+
         sleep_time = count * scale_multiplier(scale)
-        
+
         reply("Ok, see you in #{count} #{scale}")
-        
+
         connection = self.connection
         threader do
           sleep sleep_time
@@ -67,5 +68,5 @@ class Robut::Plugin::Later < Robut::Plugin::Base
       yield
     end
   end
-  
+
 end

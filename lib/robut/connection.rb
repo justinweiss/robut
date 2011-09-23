@@ -6,7 +6,7 @@ require 'ostruct'
 # Handles opening a connection to the HipChat server, and feeds all
 # messages through our Robut::Plugin list.
 class Robut::Connection
-  
+
   # The configuration used by the Robut connection.
   #
   # Parameters:
@@ -53,12 +53,12 @@ class Robut::Connection
   def config=(config)
     @config = config.kind_of?(Hash) ? OpenStruct.new(config) : config
   end
-  
+
   # Initializes the connection. If no +config+ is passed, it defaults
   # to the class_level +config+ instance variable.
   def initialize(_config = nil)
     self.config = _config || self.class.config
-    
+
     self.client = Jabber::Client.new(self.config.jid)
     self.muc = Jabber::MUC::SimpleMUCClient.new(client)
     self.store = self.config.store || Robut::Storage::HashStore # default to in-memory store only
@@ -68,7 +68,7 @@ class Robut::Connection
       Jabber.debug = true
     end
   end
-  
+
   # Send +message+ to the room we're currently connected to, or
   # directly to the person referenced by +to+. +to+ can be either a
   # jid or the string name of the person.
@@ -77,7 +77,7 @@ class Robut::Connection
       unless to.kind_of?(Jabber::JID)
         to = find_jid_by_name(to)
       end
-      
+
       msg = Jabber::Message.new(to || muc.room, message)
       msg.type = :chat
       client.send(msg)
@@ -86,7 +86,7 @@ class Robut::Connection
     end
   end
 
-  # Sends the chat message +message+ through +plugins+. 
+  # Sends the chat message +message+ through +plugins+.
   def handle_message(plugins, time, nick, message)
     plugins.each do |plugin|
       begin
@@ -122,7 +122,7 @@ class Robut::Connection
     # Add the callback from direct messages. Turns out the
     # on_private_message callback doesn't do what it sounds like, so I
     # have to go a little deeper into xmpp4r to get this working.
-    client.add_message_callback(200, self) { |message|
+    client.add_message_callback(200, self) do |message|
       if !muc.from_room?(message.from) && message.type == :chat && message.body
         time = Time.now # TODO: get real timestamp? Doesn't seem like
                         # jabber gives it to us
@@ -133,16 +133,16 @@ class Robut::Connection
       else
         false
       end
-    }
-    
+    end
+
     muc.join(config.room + '/' + config.nick)
-    
+
     trap_signals
     loop { sleep 1 }
   end
 
   private
-  
+
   # Since we're entering an infinite loop, we have to trap TERM and
   # INT. If something like the Rdio plugin has started a server that
   # has already trapped those signals, we want to run those signal
@@ -153,7 +153,7 @@ class Robut::Connection
       old_signal_callbacks[signal].call if old_signal_callbacks[signal]
       exit
     end
-    
+
     [:INT, :TERM].each do |sig|
       old_signal_callbacks[sig] = trap(sig) { signal_callback.call(sig) }
     end

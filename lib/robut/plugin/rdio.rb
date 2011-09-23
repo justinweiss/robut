@@ -5,12 +5,13 @@ require 'robut/plugin/rdio/server'
 # HipChat. +key+ and +secret+ must be set before we can deal with any
 # Rdio commands. Additionally, you must call +start_server+ in your
 # Chatfile to start the Rdio web server.
-class Robut::Plugin::Rdio < Robut::Plugin::Base
+class Robut::Plugin::Rdio
+  include Robut::Plugin
 
   class << self
     # Your Rdio API Key
     attr_accessor :key
-    
+
     # Your Rdio API app secret
     attr_accessor :secret
 
@@ -30,7 +31,7 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
     #
     #   ./rdio-call --consumer-key=YOUR_CONSUMER_KEY --consumer-secret=YOUR_CONSUMER_SECRET getPlaybackToken domain=YOUR_DOMAIN
     attr_accessor :token
-    
+
     # The domain associated with +token+. Defaults to localhost.
     attr_accessor :domain
   end
@@ -69,8 +70,8 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
   # 'track', it only searches tracks, same for 'album'. Otherwise,
   # matches both albums and tracks.
   def search(words)
-    api = Rdio::Api.new(self.class.key, self.class.secret)
-    
+    api = ::Rdio::Api.new(self.class.key, self.class.secret)
+
     if words[1] == "album"
       query_string = words[2..-1].join(' ')
       results = api.search(query_string, "Album")
@@ -82,5 +83,5 @@ class Robut::Plugin::Rdio < Robut::Plugin::Base
       results = api.search(query_string, "Album,Track")
     end
   end
-  
+
 end

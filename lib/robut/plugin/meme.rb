@@ -2,12 +2,13 @@ require 'meme'
 
 # A simple plugin that wraps meme_generator. Requires the
 # 'meme_generator' gem.
-class Robut::Plugin::Meme < Robut::Plugin::Base
+class Robut::Plugin::Meme
+  include Robut::Plugin
 
   # This plugin is activated when robut is sent a message starting
   # with the name of a meme. The list of generators can be discovered
   # by running
-  # 
+  #
   #   @robut meme list
   #
   # from the command line. Example:
@@ -28,9 +29,9 @@ class Robut::Plugin::Meme < Robut::Plugin::Base
     return
 
     if meme == 'LIST'
-      reply("Memes available: #{Meme::GENERATORS.keys.join(', ')}")
-    elsif Meme::GENERATORS.has_key?(meme)
-      g = Meme.new(meme)
+      reply("Memes available: #{::Meme::GENERATORS.keys.join(', ')}")
+    elsif ::Meme::GENERATORS.has_key?(meme)
+      g = ::Meme.new(meme)
       line1, line2 = words.join(' ').split(';')
       reply(g.generate(line1, line2))
     else

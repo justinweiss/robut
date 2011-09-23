@@ -2,7 +2,8 @@ require 'calc'
 
 # A simple calculator. This delegates all calculations to the 'calc'
 # gem.
-class Robut::Plugin::Calc < Robut::Plugin::Base
+class Robut::Plugin::Calc
+  include Robut::Plugin
 
   # Perform the calculation specified in +message+, and send the
   # result back.
@@ -10,7 +11,7 @@ class Robut::Plugin::Calc < Robut::Plugin::Base
     if sent_to_me?(message) && words(message).first == 'calc'
       calculation = words(message, 'calc').join(' ')
       begin
-        reply("#{calculation} = #{Calc.evaluate(calculation)}")
+        reply("#{calculation} = #{::Calc.evaluate(calculation)}")
       rescue
         reply("Can't calculate that.")
       end
