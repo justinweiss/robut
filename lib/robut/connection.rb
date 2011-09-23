@@ -3,6 +3,11 @@ require 'xmpp4r/muc/helper/simplemucclient'
 require 'xmpp4r/roster/helper/roster'
 require 'ostruct'
 
+if defined?(Encoding)
+  # Monkey-patch an incompatibility between ejabberd and rexml
+  require 'rexml_patches'
+end
+
 # Handles opening a connection to the HipChat server, and feeds all
 # messages through our Robut::Plugin list.
 class Robut::Connection
