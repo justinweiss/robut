@@ -37,7 +37,7 @@ class Robut::Plugin::Meme
   #
   # from the command line. Example:
   #
-  #   @robut meme h_mermaid look at this stuff, isn't it neat; my vinyl collection is almost complete
+  #   @robut meme all_the_things write; all the plugins
   #
   # Send message to the specified meme generator. If the meme requires
   # more than one line of text, lines should be separated with a semicolon.
@@ -46,14 +46,13 @@ class Robut::Plugin::Meme
     words = words(message)
     command = words.shift.downcase
     return unless command == 'meme'
-    meme = words.first
+    meme = words.shift
 
     if meme == 'list'
       reply("Memes available: #{MEMES.keys.join(', ')}")
     elsif MEMES[meme]
-      words.shift
       url = CGI.escape(MEMES[meme])
-      line1, line2 = words.join(' ').split(';').map { |line| CGI.escape(line)}
+      line1, line2 = words.join(' ').split(';').map { |line| CGI.escape(line.strip)}
       meme_url = "http://memecaptain.com/i?u=#{url}&tt=#{line1}"
       meme_url += "&tb=#{line2}" if line2
       reply(meme_url)
