@@ -35,43 +35,36 @@ class Robut::Plugin::Rdio
     # The domain associated with +token+. Defaults to localhost.
     attr_accessor :domain
   end
-
-  # Starts a Robut::Plugin::Rdio::Server server for communicating with
-  # the actual Rdio web player. You must call this in the Chatfile if
-  # you plan on using this gem.
-  def self.start_server
-    @server = Thread.new { Server.run! :host => (host || "localhost"), :port => (port || 4567) }
-    Server.token = self.token || "GAlNi78J_____zlyYWs5ZG02N2pkaHlhcWsyOWJtYjkyN2xvY2FsaG9zdEbwl7EHvbylWSWFWYMZwfc="
-    Server.domain = self.domain || "localhost"
-  end
-
-  # Returns a description of how to use this plugin
-  def usage
-    [
-      "#{at_nick} play <song> - queues <song> for playing",
-      "#{at_nick} play album <album> - queues <album> for playing",
-      "#{at_nick} play track <track> - queues <track> for playing"
-    ]
-  end
-
   # Queues songs into the Rdio web player. @nick play search query
   # will queue the first search result matching 'search query' into
   # the web player. It can be an artist, album, or song.
   def handle(time, sender_nick, message)
     words = words(message)
-    if sent_to_me?(message) && words.first == 'play'
-      results = search(words)
-      result = results.first
-      if result
-        Server.queue << result.key
-        name = result.name
-        name = "#{result.artist_name} - #{name}" if result.respond_to?(:artist_name) && result.artist_name
-        reply("Playing #{name}")
-      else
-        reply("I couldn't find #{query_string} on Rdio.")
+    if sent_to_me?(message)
+      
+      if words.first == 'play' and words.length > 1
+        results = search(words)
+        result = results.first
+        if result
+          Server.queue << result.key
+          name = result.name
+          name = "#{result.artist_name} - #{name}" if result.respond_to?(:artist_name) && result.artist_name
+          reply("Playing #{name}")
+        else
+          reply("I couldn't find '#{words.join(" ")}' on Rdio.")
+        end
+        
+      else words.first =~ /play|(?:un)?pause|next|restart/
+        Server.command << words.first
       end
+      
     end
+  rescue => exception
+    
+    reply "Sorry, I made a mistake: #{exception}!"
+    
   end
+
 
   private
 

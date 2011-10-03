@@ -17,6 +17,9 @@ class Robut::Plugin::Rdio
       # API yet.
       attr_accessor :queue
 
+      # A command list for the player to execute
+      attr_accessor :command
+      
       # The playback token for +domain+. If you're accessing Rdio over
       # localhost, you shouldn't need to change this. Otherwise,
       # download the rdio-python plugin:
@@ -32,7 +35,8 @@ class Robut::Plugin::Rdio
       attr_accessor :domain
     end
     self.queue = []
-
+    self.command = []
+    
     # Renders a simple Rdio web player.
     get '/' do
       File.read(File.expand_path('public/index.html', File.dirname(__FILE__)))
@@ -51,6 +55,13 @@ END
       queue = self.class.queue.dup
       self.class.queue = []
       queue.to_json
+    end
+    
+    # Returns the command for the player
+    get '/command.json' do
+      command = self.class.command.dup
+      self.class.command = []
+      command.to_json
     end
   end
 end
