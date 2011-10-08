@@ -50,7 +50,10 @@ class Robut::Plugin::Rdio
     [
       "#{at_nick} play <song> - queues <song> for playing",
       "#{at_nick} play album <album> - queues <album> for playing",
-      "#{at_nick} play track <track> - queues <track> for playing"
+      "#{at_nick} play track <track> - queues <track> for playing",
+      "#{at_nick} play/unpause - unpauses the track that is currently playing",
+      "#{at_nick} next - move to the next track",
+      "#{at_nick} restart - restart the current track"
     ]
   end
 
@@ -59,18 +62,30 @@ class Robut::Plugin::Rdio
   # the web player. It can be an artist, album, or song.
   def handle(time, sender_nick, message)
     words = words(message)
-    if sent_to_me?(message) && words.first == 'play'
-      results = search(words)
-      result = results.first
-      if result
-        Server.queue << result.key
-        name = result.name
-        name = "#{result.artist_name} - #{name}" if result.respond_to?(:artist_name) && result.artist_name
-        reply("Playing #{name}")
-      else
-        reply("I couldn't find #{query_string} on Rdio.")
+    
+    if sent_to_me?(message)
+      
+      if words.first == 'play' and words.length > 1
+        results = search(words)
+        result = results.first
+        if result
+          Server.queue << result.key
+          name = result.name
+          name = "#{result.artist_name} - #{name}" if result.respond_to?(:artist_name) && result.artist_name
+          reply("Playing #{name}")
+        else
+          reply("I couldn't find #{words.join(" ")} on Rdio.")
+        end
+        
+      else words.first =~ /play|(?:un)?pause|next|restart|back/
+        Server.command << words.first
       end
+      
     end
+  rescue => exception
+    
+    reply "Sorry, I made a mistake #{exception}!"
+    
   end
 
   private
