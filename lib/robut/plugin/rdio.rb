@@ -82,10 +82,6 @@ class Robut::Plugin::Rdio
       end
       
     end
-  rescue => exception
-    
-    reply "Sorry, I made a mistake #{exception}!"
-    
   end
 
   private
