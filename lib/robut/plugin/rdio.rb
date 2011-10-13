@@ -77,7 +77,7 @@ class Robut::Plugin::Rdio
           reply("I couldn't find #{words.join(" ")} on Rdio.")
         end
         
-      else words.first =~ /play|(?:un)?pause|next|restart|back/
+      else words.first =~ /play|(?:un)?pause|next|restart|back|clear/
         Server.command << words.first
       end
       
