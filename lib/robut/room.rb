@@ -1,4 +1,4 @@
-class Robut::Room < Robut::Connection
+class Robut::Room
   # The MUC that wraps the Jabber Chat protocol.
   attr_accessor :muc
 
