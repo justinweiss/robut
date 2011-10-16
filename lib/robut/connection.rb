@@ -89,6 +89,8 @@ class Robut::Connection
       Robut::Room.new(self, room)
     end
 
+    personal_message = Robut::PM.new(self, rooms)
+
     trap_signals
     loop { sleep 1 }
   end
@@ -112,11 +114,5 @@ private
     [:INT, :TERM].each do |sig|
       old_signal_callbacks[sig] = trap(sig) { signal_callback.call(sig) }
     end
-  end
-
-    # Find a jid in the roster with the given name, case-insensitively
-  def find_jid_by_name(name)
-    name = name.downcase
-    roster.items.detect {|jid, item| item.iname.downcase == name}.first
   end
 end
