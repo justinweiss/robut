@@ -105,11 +105,47 @@ class Robut::Connection
       end
     end
 
-
     trap_signals
     loop { sleep 1 }
   end
 
+  # Send +message+ directly to the person referenced by +to+.
+  # +to+ can be either a jid or the string name of the person.
+  def reply(message, to)
+    unless to.kind_of?(Jabber::JID)
+      to = find_jid_by_name(to)
+    end
+
+    msg = Jabber::Message.new(to, message)
+    msg.type = :chat
+    client.send(msg)
+  end
+
+  # Sends the chat message +message+ through +plugins+.
+  def handle_message(plugins, time, nick, message)
+    # ignore all messages sent by robut. If you really want robut to
+    # reply to itself, you can use +fake_message+.
+    return if nick == config.nick
+
+    plugins.each do |plugin|
+      begin
+        rsp = plugin.handle(time, nick, message)
+        break if rsp == true
+      rescue => e
+        error = "UH OH! #{plugin.class.name} just crashed!"
+
+        if nick
+          reply(error, nick) # Connection#reply
+        else
+          reply(error)       # Room#reply
+        end
+        if config.logger
+          config.logger.error e
+          config.logger.error e.backtrace.join("\n")
+        end
+      end
+    end
+  end
 
 private
   # Since we're entering an infinite loop, we have to trap TERM and
@@ -126,5 +162,11 @@ private
     [:INT, :TERM].each do |sig|
       old_signal_callbacks[sig] = trap(sig) { signal_callback.call(sig) }
     end
+  end
+
+    # Find a jid in the roster with the given name, case-insensitively
+  def find_jid_by_name(name)
+    name = name.downcase
+    roster.items.detect {|jid, item| item.iname.downcase == name}.first
   end
 end
