@@ -86,65 +86,15 @@ class Robut::Connection
     roster.wait_for_roster
 
     rooms = self.config.rooms.collect do |room|
-      Robut::Room.new(client, config, room)
-    end
-    # Add the callback from direct messages. Turns out the
-    # on_private_message callback doesn't do what it sounds like, so I
-    # have to go a little deeper into xmpp4r to get this working.
-    client.add_message_callback(200, self) do |message|
-      from_room = rooms.any? {|room| room.muc.from_room?(message.from)}
-      if !from_room && message.type == :chat && message.body
-        time = Time.now # TODO: get real timestamp? Doesn't seem like
-                        # jabber gives it to us
-        sender_jid = message.from
-        plugins = Robut::Plugin.plugins.map { |p| p.new(self, sender_jid) }
-        handle_message(plugins, time, self.roster[sender_jid].iname, message.body)
-        true
-      else
-        false
-      end
+      Robut::Room.new(self, room)
     end
 
     trap_signals
     loop { sleep 1 }
   end
 
-  # Send +message+ directly to the person referenced by +to+.
-  # +to+ can be either a jid or the string name of the person.
+  # To be over written by inheriting classes
   def reply(message, to)
-    unless to.kind_of?(Jabber::JID)
-      to = find_jid_by_name(to)
-    end
-
-    msg = Jabber::Message.new(to, message)
-    msg.type = :chat
-    client.send(msg)
-  end
-
-  # Sends the chat message +message+ through +plugins+.
-  def handle_message(plugins, time, nick, message)
-    # ignore all messages sent by robut. If you really want robut to
-    # reply to itself, you can use +fake_message+.
-    return if nick == config.nick
-
-    plugins.each do |plugin|
-      begin
-        rsp = plugin.handle(time, nick, message)
-        break if rsp == true
-      rescue => e
-        error = "UH OH! #{plugin.class.name} just crashed!"
-
-        if nick
-          reply(error, nick) # Connection#reply
-        else
-          reply(error)       # Room#reply
-        end
-        if config.logger
-          config.logger.error e
-          config.logger.error e.backtrace.join("\n")
-        end
-      end
-    end
   end
 
 private
