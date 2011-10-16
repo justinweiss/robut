@@ -21,9 +21,12 @@ module Robut::Plugin
   # room.
   attr_accessor :private_sender
 
+  attr_accessor :reply_to
+
   # Creates a new instance of this plugin that references the
   # specified connection.
-  def initialize(connection, private_sender = nil)
+  def initialize(connection, reply_to, private_sender = nil)
+    self.reply_to = reply_to
     self.connection = connection
     self.private_sender = private_sender
   end
@@ -33,9 +36,9 @@ module Robut::Plugin
   # original message was sent. Otherwise, PMs the message to +to+.
   def reply(message, to = nil)
     if to == :room
-      connection.reply(message, nil)
+      reply_to.reply(message, nil)
     else
-      connection.reply(message, to || private_sender)
+      reply_to.reply(message, to || private_sender)
     end
   end
 
@@ -90,8 +93,8 @@ module Robut::Plugin
 
   def fake_message(time, sender_nick, msg)
     # TODO: ensure this connection is threadsafe
-    plugins = Robut::Plugin.plugins.map { |p| p.new(connection, private_sender) }
-    connection.handle_message(plugins, time, sender_nick, msg)
+    plugins = Robut::Plugin.plugins.map { |p| p.new(reply_to, private_sender) }
+    reply_to.handle_message(plugins, time, sender_nick, msg)
   end
 
   # Accessor for the store instance

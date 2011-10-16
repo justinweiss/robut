@@ -12,7 +12,7 @@ class Robut::Room
 
     # Add the callback from messages that occur inside the room
     muc.on_message do |time, nick, message|
-      plugins = Robut::Plugin.plugins.map { |p| p.new(self, nil) }
+      plugins = Robut::Plugin.plugins.map { |p| p.new(self, connection) }
       handle_message(plugins, time, nick, message)
     end
 
