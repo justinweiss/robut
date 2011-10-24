@@ -25,6 +25,9 @@ Some of the included plugins require extra gems to be installed:
 [Robut::Plugin::Rdio] requires the <tt>rdio</tt> and <tt>sinatra</tt> gems.
 [Robut::Plugin::Weather] requires the <tt>nokogiri</tt> gem.
 
+A list of known 3rd-party plugins is available on the wiki: https://github.com/justinweiss/robut/wiki/Robut-Plugins
+Feel free to add your own creations!
+
 == The Chatfile
 
 When the +robut+ command runs, it looks for and evals ruby code in a
