@@ -16,6 +16,7 @@ module Robut::Plugin
   end
 
   self.plugins = []
+  self.filters = []
 
   # A reference to the connection attached to this instance of the
   # plugin. This is mostly used to communicate back to the server.
