@@ -14,6 +14,37 @@ class SimplePlugin
   end
 end
 
+class SimplePassThroughFilterPlugin
+  include Robut::Plugin
+  attr_accessor :run
+
+  def initialize(*args)
+    super(*args)
+    @run = false
+  end
+
+  def handle(*args)
+    self.run = true
+    return true
+  end
+end
+
+class SimpleFilterPlugin
+  include Robut::Plugin
+  attr_accessor :run
+
+  def initialize(*args)
+    super(*args)
+    @run = false
+  end
+
+  def handle(*args)
+    self.run = true
+    return false
+  end
+end
+
+
 class ReplyToUserPlugin
   include Robut::Plugin
 
@@ -63,7 +94,7 @@ class ConnectionTest < Test::Unit::TestCase
         :nick => "Test Robut"
       })
   end
-
+  
   def test_end_to_end_message
     Robut::Plugin.plugins = [Robut::Plugin::Echo]
     @connection.muc = ReplyMock.new
@@ -118,11 +149,34 @@ class ConnectionTest < Test::Unit::TestCase
     assert_equal(@connection.muc.room, message.to.to_s)
     assert_equal("Reply", message.body)
   end
+  
+  def test_filter_message_filter_returns_true
+    Robut::Plugin.filters = [SimplePassThroughFilterPlugin]
+    @connection.muc = ReplyMock.new
+    filters = filters(@connection)
+    message_should_be_filtered = @connection.filter_message(filters, Time.now, 'Justin', '@test echo Test Message')
+    assert filters.first.run, "Filter was not executed"
+    assert !message_should_be_filtered, "Message should not have been filtered"
+  end
 
+  def test_filter_message_filter_returns_false
+    Robut::Plugin.plugins = [Robut::Plugin::Echo]
+    Robut::Plugin.filters = [SimpleFilterPlugin]
+    @connection.muc = ReplyMock.new
+    filters = filters(@connection)
+    message_should_be_filtered = @connection.filter_message(filters, Time.now, 'Justin', '@test echo Test Message')
+    assert filters.first.run, "Filter was not executed"
+    assert message_should_be_filtered
+  end
+  
   private
 
   def plugins(connection, sender = nil)
     Robut::Plugin.plugins.map { |p| p.new(connection, sender) }
+  end
+  
+  def filters(connection, sender = nil)
+    Robut::Plugin.filters.map { |p| p.new(connection, sender) }
   end
 
 end

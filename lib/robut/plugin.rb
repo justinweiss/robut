@@ -8,6 +8,11 @@ module Robut::Plugin
     # plugin class, you should add it to this list if you want it to
     # respond to messages.
     attr_accessor :plugins
+
+    # A list of all available filter classes. When you require a new
+    # filters class, you should add it to this list if you want it to
+    # attempt to filter messages.
+    attr_accessor :filters
   end
 
   self.plugins = []
