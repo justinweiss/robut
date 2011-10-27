@@ -110,6 +110,31 @@ class Robut::Connection
       end
     end
   end
+  
+  #
+  # Return a truthy value if the any filter returned a negative value
+  # 
+  def filter_message(filters, time, nick, message)
+    # ignore all messages sent by robut. If you really want robut to
+    # reply to itself, you can use +fake_message+.
+    return false if nick == config.nick
+    
+    filters.detect do |filter|
+      
+      begin
+        filter.handle(time,nick,message) == false
+      rescue => e
+         reply("UH OH! #{filter.class.name} just crashed!")
+         if config.logger
+           config.logger.error e
+           config.logger.error e.backtrace.join("\n")
+         end
+         
+         false
+      end
+      
+    end
+  end
 
   # Connects to the specified room with the given credentials, and
   # enters an infinite loop. Any messages sent to the room will pass
@@ -124,8 +149,14 @@ class Robut::Connection
 
     # Add the callback from messages that occur inside the room
     muc.on_message do |time, nick, message|
-      plugins = Robut::Plugin.plugins.map { |p| p.new(self, nil) }
-      handle_message(plugins, time, nick, message)
+      
+      filters = Robut::Plugin.filters.map { |f| f.new(self, nil) }
+      
+      unless filter_message(filters, time, nick, message)
+        plugins = Robut::Plugin.plugins.map { |p| p.new(self, nil) }
+        handle_message(plugins, time, nick, message)
+      end
+      
     end
 
     # Add the callback from direct messages. Turns out the
@@ -136,8 +167,14 @@ class Robut::Connection
         time = Time.now # TODO: get real timestamp? Doesn't seem like
                         # jabber gives it to us
         sender_jid = message.from
-        plugins = Robut::Plugin.plugins.map { |p| p.new(self, sender_jid) }
-        handle_message(plugins, time, self.roster[sender_jid].iname, message.body)
+        
+        filters = Robut::Plugin.filters.map { |f| f.new(self, nil) }
+        
+        unless filter_message(filters, time, nick, message)
+          plugins = Robut::Plugin.plugins.map { |p| p.new(self, sender_jid) }
+          handle_message(plugins, time, self.roster[sender_jid].iname, message.body)
+        end
+        
         true
       else
         false
