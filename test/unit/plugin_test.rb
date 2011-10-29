@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'mocks/presence_mock'
 
 class Robut::PluginTest < Test::Unit::TestCase
 
@@ -7,7 +8,11 @@ class Robut::PluginTest < Test::Unit::TestCase
   end
 
   def setup
-    @plugin = HandrolledStubPlugin.new(Robut::ConnectionMock.new)
+    @plugin = HandrolledStubPlugin.new(
+      Robut::PresenceMock.new(
+        Robut::ConnectionMock
+      )
+    )
   end
 
   def test_sent_to_me?
