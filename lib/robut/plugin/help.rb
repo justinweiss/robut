@@ -9,7 +9,7 @@ class Robut::Plugin::Help
     if sent_to_me?(message) && words.first == 'help'
       reply("Supported commands:")
       Robut::Plugin.plugins.each do |plugin|
-        plugin_instance = plugin.new(connection, private_sender)
+        plugin_instance = plugin.new(reply_to, private_sender)
         Array(plugin_instance.usage).each do |command_usage|
           reply(command_usage)
         end
