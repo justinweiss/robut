@@ -23,11 +23,11 @@ module Robut::Plugin
 
   attr_accessor :reply_to
 
-  # Creates a new instance of this plugin that references the
-  # specified connection.
-  def initialize(connection, reply_to, private_sender = nil)
+  # Creates a new instance of this plugin to reply to a particular
+  # object over that object's connection
+  def initialize(reply_to, private_sender = nil)
     self.reply_to = reply_to
-    self.connection = connection
+    self.connection = reply_to.connection
     self.private_sender = private_sender
   end
 
@@ -93,7 +93,7 @@ module Robut::Plugin
 
   def fake_message(time, sender_nick, msg)
     # TODO: ensure this connection is threadsafe
-    plugins = Robut::Plugin.plugins.map { |p| p.new(connection, reply_to, private_sender) }
+    plugins = Robut::Plugin.plugins.map { |p| p.new(reply_to, private_sender) }
     reply_to.handle_message(plugins, time, sender_nick, msg)
   end
 
