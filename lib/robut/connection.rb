@@ -66,7 +66,7 @@ class Robut::Connection
 
     self.client = Jabber::Client.new(self.config.jid)
     self.store = self.config.store || Robut::Storage::HashStore # default to in-memory store only
-    self.config.rooms ||= Array.new(self.config.room) # legacy support?
+    self.config.rooms ||= Array(self.config.room) # legacy support?
 
     if self.config.logger
       Jabber.logger = self.config.logger
