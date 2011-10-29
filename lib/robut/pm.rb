@@ -13,7 +13,7 @@ class Robut::PM
         time = Time.now # TODO: get real timestamp? Doesn't seem like
                         # jabber gives it to us
         sender_jid = message.from
-        plugins = Robut::Plugin.plugins.map { |p| p.new(self, connection, sender_jid) }
+        plugins = Robut::Plugin.plugins.map { |p| p.new(connection, self, sender_jid) }
         handle_message(plugins, time, connection.roster[sender_jid].iname, message.body)
         true
       else
