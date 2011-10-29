@@ -154,13 +154,7 @@ class ConnectionTest < Test::Unit::TestCase
   end
 
   def mock_roster(jid)
-    OpenStruct.new({
-    :items => {
-      jid => OpenStruct.new({
-        :iname => "Justin Weiss"
-          })
-        }
-    })
+    OpenStruct.new( :items => { jid => OpenStruct.new(:iname => "Justin Weiss") } )
   end
 
 end
