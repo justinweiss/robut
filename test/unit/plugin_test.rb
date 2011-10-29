@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'mocks/presence_mock'
 
 class Robut::PluginTest < Test::Unit::TestCase
 
