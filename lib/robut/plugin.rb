@@ -93,7 +93,7 @@ module Robut::Plugin
 
   def fake_message(time, sender_nick, msg)
     # TODO: ensure this connection is threadsafe
-    plugins = Robut::Plugin.plugins.map { |p| p.new(reply_to, private_sender) }
+    plugins = Robut::Plugin.plugins.map { |p| p.new(connection, reply_to, private_sender) }
     reply_to.handle_message(plugins, time, sender_nick, msg)
   end
 
