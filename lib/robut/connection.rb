@@ -95,10 +95,6 @@ class Robut::Connection
     loop { sleep 1 }
   end
 
-  # To be over written by inheriting classes
-  def reply(message, to)
-  end
-
 private
   # Since we're entering an infinite loop, we have to trap TERM and
   # INT. If something like the Rdio plugin has started a server that
