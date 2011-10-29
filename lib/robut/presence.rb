@@ -1,4 +1,8 @@
-module Robut::HandleMessage
+class Robut::Presence
+
+  # The Robut::Connection that has all the connection info.
+  attr_accessor :connection
+
   # Sends the chat message +message+ through +plugins+.
   def handle_message(plugins, time, nick, message)
     # ignore all messages sent by robut. If you really want robut to

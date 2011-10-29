@@ -1,7 +1,4 @@
-class Robut::PM
-  include Robut::HandleMessage
-
-  attr_accessor :connection
+class Robut::PM < Robut::Presence
 
   def initialize(connection, rooms)
     # Add the callback from direct messages. Turns out the

@@ -1,12 +1,8 @@
 # Handles connections and responses to different rooms. 
-class Robut::Room
-  include Robut::HandleMessage
+class Robut::Room < Robut::Presence
 
   # The MUC that wraps the Jabber Chat protocol.
   attr_accessor :muc
-
-  # The Robut::Connection that has all the connection info.
-  attr_accessor :connection
 
   def initialize(connection, room)
     self.muc = Jabber::MUC::SimpleMUCClient.new(connection.client)
