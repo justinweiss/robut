@@ -14,9 +14,10 @@ class Robut::Plugin::HelpTest < Test::Unit::TestCase
 
   def setup
     @connection = Robut::ConnectionMock.new
+    @presence = Robut::PresenceMock.new(@connection)
     Robut::Plugin.plugins << Robut::Plugin::Echo
     Robut::Plugin.plugins << Robut::Plugin::Help
-    @plugin = Robut::Plugin::Help.new(@connection)
+    @plugin = Robut::Plugin::Help.new(@presence)
   end
 
   def teardown
@@ -29,7 +30,7 @@ class Robut::Plugin::HelpTest < Test::Unit::TestCase
       "Supported commands:",
       "@robut echo <message> - replies to the channel with <message>",
       "@robut help - displays this message",
-    ], @plugin.connection.replies
+    ], @plugin.reply_to.replies
   end
 
   def test_empty_help
@@ -39,7 +40,7 @@ class Robut::Plugin::HelpTest < Test::Unit::TestCase
       "Supported commands:",
       "@robut echo <message> - replies to the channel with <message>",
       "@robut help - displays this message",
-    ], @plugin.connection.replies
+    ], @plugin.reply_to.replies
   end
 end
   

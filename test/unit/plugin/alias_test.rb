@@ -6,7 +6,8 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
 
   def setup
     @connection = Robut::ConnectionMock.new
-    @plugin = Robut::Plugin::Alias.new(@connection)
+    @presence = Robut::PresenceMock.new(@connection)
+    @plugin = Robut::Plugin::Alias.new(@presence)
     @plugin.aliases = {}
   end
   
@@ -18,7 +19,7 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
   def test_thinks_this_is_that
     @plugin.handle(Time.now, "@john", "@robut alias this @robut echo that")
     @plugin.handle(Time.now, "@john", "this")
-    message = @plugin.connection.messages.first
+    message = @plugin.reply_to.messages.first
     assert_equal "@john", message[1]
     assert_equal "@robut echo that", message[2]
   end
@@ -36,7 +37,7 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
   def test_can_apply_aliases_with_quotes
     @plugin.handle(Time.now, "@john", '@robut alias "long string" "some other long string"')
     @plugin.handle(Time.now, "@john", "long string")
-    message = @plugin.connection.messages.first
+    message = @plugin.reply_to.messages.first
     assert_equal "@john", message[1]
     assert_equal "some other long string", message[2]    
   end
@@ -63,7 +64,7 @@ class Robut::Plugin::AliasTest < Test::Unit::TestCase
     @plugin.handle(Time.now, "@john", "@robut alias this that")
     @plugin.handle(Time.now, "@john", "@robut alias something something else")
     @plugin.handle(Time.now, "@john", "@robut aliases")
-    assert_equal ["something => something else\nthis => that"], @plugin.connection.replies
+    assert_equal ["something => something else\nthis => that"], @plugin.reply_to.replies
   end
   
   def test_can_clear_aliases

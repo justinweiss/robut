@@ -5,17 +5,18 @@ class Robut::Plugin::PingTest < Test::Unit::TestCase
 
   def setup
     @connection = Robut::ConnectionMock.new
-    @plugin = Robut::Plugin::Ping.new(@connection)
+    @presence = Robut::PresenceMock.new(@connection)
+    @plugin = Robut::Plugin::Ping.new(@presence)
   end
 
   def test_replies_wih_pong
     @plugin.handle(Time.now, "@john", "@robut ping")
-    assert_equal ["pong"], @plugin.connection.replies
+    assert_equal ["pong"], @plugin.reply_to.replies
   end
 
   def test_replies_wih_sec
     @plugin.handle(Time.now, "@john", "@robut ping pong")
-    assert_equal [], @plugin.connection.replies
+    assert_equal [], @plugin.reply_to.replies
   end
   
 end

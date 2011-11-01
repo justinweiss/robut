@@ -75,7 +75,7 @@ Robut::Connection.configure block:
     config.jid = '...@chat.hipchat.com/bot'
     config.password = 'password'
     config.nick = 'My Nick'
-    config.room = '...@conf.hipchat.com'
+    config.rooms = ['1234_room_1@conf.hipchat.com', '1234_room_2@conf.hipchat.com']
     
     # Example of the YamlStore which uses a yaml file for persistence
     Robut::Storage::YamlStore.file = "~/.robut_store"
@@ -182,5 +182,4 @@ Once your changes are ready:
 
 == Todo
 
-* Support connections to multiple rooms
 * More plugins!
