@@ -85,8 +85,8 @@ class Robut::Connection
     self.roster = Jabber::Roster::Helper.new(client)
     roster.wait_for_roster
 
-    rooms = self.config.rooms.collect do |room|
-      Robut::Room.new(self, room)
+    rooms = self.config.rooms.collect do |room_name|
+      Robut::Room.new(self, room_name).tap {|r| r.join }
     end
 
     personal_message = Robut::PM.new(self, rooms)

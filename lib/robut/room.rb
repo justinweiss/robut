@@ -4,17 +4,23 @@ class Robut::Room < Robut::Presence
   # The MUC that wraps the Jabber Chat protocol.
   attr_accessor :muc
 
-  def initialize(connection, room)
-    self.muc = Jabber::MUC::SimpleMUCClient.new(connection.client)
-    self.connection = connection
+  # The room jid
+  attr_accessor :name
 
+  def initialize(connection, room_name)
+    self.muc        = Jabber::MUC::SimpleMUCClient.new(connection.client)
+    self.connection = connection
+    self.name       = room_name
+  end
+
+  def join
     # Add the callback from messages that occur inside the room
     muc.on_message do |time, nick, message|
       plugins = Robut::Plugin.plugins.map { |p| p.new(self) }
       handle_message(plugins, time, nick, message)
     end
 
-    muc.join(room + '/' + connection.config.nick)
+    muc.join(self.name + '/' + connection.config.nick)
   end
 
   # Send +message+ to the room we're currently connected to
