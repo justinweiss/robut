@@ -19,7 +19,7 @@ class Robut::Connection
   # [+jid+, +password+, +nick+] The HipChat credentials given on
   #                             https://www.hipchat.com/account/xmpp
   #
-  # [+room+] The chat room to join, in the format <tt>jabber_name</tt>@<tt>conference_server</tt>
+  # [+rooms+] The chat room(s) to join, with each in the format <tt>jabber_name</tt>@<tt>conference_server</tt>
   #
   # [+logger+] a logger instance to use for debug output.
   attr_accessor :config
@@ -27,14 +27,14 @@ class Robut::Connection
   # The Jabber::Client that's connected to the HipChat server.
   attr_accessor :client
 
-  # The MUC that wraps the Jabber Chat protocol.
-  attr_accessor :muc
-
   # The storage instance that's available to plugins
   attr_accessor :store
 
   # The roster of currently available people
   attr_accessor :roster
+
+  # The rooms that robut is connected to.
+  attr_accessor :rooms
 
   class << self
     # Class-level config. This is set by the +configure+ class method,
@@ -65,49 +65,12 @@ class Robut::Connection
     self.config = _config || self.class.config
 
     self.client = Jabber::Client.new(self.config.jid)
-    self.muc = Jabber::MUC::SimpleMUCClient.new(client)
     self.store = self.config.store || Robut::Storage::HashStore # default to in-memory store only
+    self.config.rooms ||= Array(self.config.room) # legacy support?
 
     if self.config.logger
       Jabber.logger = self.config.logger
       Jabber.debug = true
-    end
-  end
-
-  # Send +message+ to the room we're currently connected to, or
-  # directly to the person referenced by +to+. +to+ can be either a
-  # jid or the string name of the person.
-  def reply(message, to = nil)
-    if to
-      unless to.kind_of?(Jabber::JID)
-        to = find_jid_by_name(to)
-      end
-
-      msg = Jabber::Message.new(to || muc.room, message)
-      msg.type = :chat
-      client.send(msg)
-    else
-      muc.send(Jabber::Message.new(muc.room, message))
-    end
-  end
-
-  # Sends the chat message +message+ through +plugins+.
-  def handle_message(plugins, time, nick, message)
-    # ignore all messages sent by robut. If you really want robut to
-    # reply to itself, you can use +fake_message+.
-    return if nick == config.nick
-    
-    plugins.each do |plugin|
-      begin
-        rsp = plugin.handle(time, nick, message)
-        break if rsp == true
-      rescue => e
-        reply("UH OH! #{plugin.class.name} just crashed!")
-        if config.logger
-          config.logger.error e
-          config.logger.error e.backtrace.join("\n")
-        end
-      end
     end
   end
 
@@ -122,36 +85,17 @@ class Robut::Connection
     self.roster = Jabber::Roster::Helper.new(client)
     roster.wait_for_roster
 
-    # Add the callback from messages that occur inside the room
-    muc.on_message do |time, nick, message|
-      plugins = Robut::Plugin.plugins.map { |p| p.new(self, nil) }
-      handle_message(plugins, time, nick, message)
+    rooms = self.config.rooms.collect do |room_name|
+      Robut::Room.new(self, room_name).tap {|r| r.join }
     end
 
-    # Add the callback from direct messages. Turns out the
-    # on_private_message callback doesn't do what it sounds like, so I
-    # have to go a little deeper into xmpp4r to get this working.
-    client.add_message_callback(200, self) do |message|
-      if !muc.from_room?(message.from) && message.type == :chat && message.body
-        time = Time.now # TODO: get real timestamp? Doesn't seem like
-                        # jabber gives it to us
-        sender_jid = message.from
-        plugins = Robut::Plugin.plugins.map { |p| p.new(self, sender_jid) }
-        handle_message(plugins, time, self.roster[sender_jid].iname, message.body)
-        true
-      else
-        false
-      end
-    end
-
-    muc.join(config.room + '/' + config.nick)
+    personal_message = Robut::PM.new(self, rooms)
 
     trap_signals
     loop { sleep 1 }
   end
 
-  private
-
+private
   # Since we're entering an infinite loop, we have to trap TERM and
   # INT. If something like the Rdio plugin has started a server that
   # has already trapped those signals, we want to run those signal
@@ -166,11 +110,5 @@ class Robut::Connection
     [:INT, :TERM].each do |sig|
       old_signal_callbacks[sig] = trap(sig) { signal_callback.call(sig) }
     end
-  end
-
-  # Find a jid in the roster with the given name, case-insensitively
-  def find_jid_by_name(name)
-    name = name.downcase
-    roster.items.detect {|jid, item| item.iname.downcase == name}.first
   end
 end
