@@ -8,6 +8,9 @@ Robut::Plugin.plugins << Robut::Plugin::TWSS
 
 # Configure the robut jabber connection and you're good to go!
 Robut::Connection.configure do |config|
+  # Note that the jid must end with /bot if you don't want robut to 
+  # spam the channel, as described by the last bullet point on this 
+  # page: https://www.hipchat.com/help/category/xmpp
   config.jid = '...@chat.hipchat.com/bot'
   config.password = 'password'
   config.nick = 'My Nick'
