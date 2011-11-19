@@ -1,8 +1,6 @@
 require 'test_helper'
 require 'robut/plugin/echo'
 
-require 'ruby-debug'
-
 class MucMock
   attr_accessor :messages, :room
 
