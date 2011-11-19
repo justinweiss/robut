@@ -18,7 +18,7 @@ class Robut::Plugin::GoogleImages
     command = words.shift.downcase
     return unless command == 'image'
 
-    image Google::Search::Image.new(:query => words.join(' ')).first
+    image = Google::Search::Image.new(:query => words.join(' ')).first
     
     if image
       reply image.uri
