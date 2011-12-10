@@ -1,6 +1,6 @@
 = Robut
 
-The friendly plugin-enabled HipChat bot. 
+The friendly plugin-enabled HipChat bot.
 
 == Installation and usage
 
@@ -22,7 +22,6 @@ Some of the included plugins require extra gems to be installed:
 
 [Robut::Plugin::TWSS] requires the <tt>twss</tt> gem.
 [Robut::Plugin::Calc] requires the <tt>calc</tt> gem.
-[Robut::Plugin::Rdio] requires the <tt>rdio</tt> and <tt>sinatra</tt> gems.
 [Robut::Plugin::Weather] requires the <tt>nokogiri</tt> gem.
 
 A list of known 3rd-party plugins is available on the wiki: https://github.com/justinweiss/robut/wiki/Robut-Plugins
@@ -56,7 +55,7 @@ kind of configuration they support.
 Some plugins might require storage (like the `lunch` plugin).  You can
 configure the type of storage you want to use based on the need for
 persistence.  The default is the HashStore which is in-memory only.  Below
-is an example of using the YamlStore.  
+is an example of using the YamlStore.
 
   Robut::Connection.configure do |config|
     # ...
@@ -76,11 +75,11 @@ Robut::Connection.configure block:
     config.password = 'password'
     config.nick = 'My Nick'
     config.rooms = ['1234_room_1@conf.hipchat.com', '1234_room_2@conf.hipchat.com']
-    
+
     # Example of the YamlStore which uses a yaml file for persistence
     Robut::Storage::YamlStore.file = "~/.robut_store"
     config.store = Robut::Storage::YamlStore
-    
+
     # Add a logger if you want to debug the connection
     # config.logger = Logger.new(STDOUT)
   end
@@ -101,16 +100,16 @@ Robut includes a few plugins that we've found useful:
   @robut lunch? # => "Banh Mi!"
 
 
-[Robut::Plugin::Meme] an interface to memecaptain. 
+[Robut::Plugin::Meme] an interface to memecaptain.
 
   @robut meme all_the_things drink; all the beer
 
 
-[Robut::Plugin::Sayings] a simple regex listener and responder. 
+[Robut::Plugin::Sayings] a simple regex listener and responder.
 
   You're the worst robot ever, @robut. # => I know.
 
-[Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate. 
+[Robut::Plugin::TWSS] an interface to the TWSS gem. Listens to anything said in the chat room and responds "That's what she said!" where appropriate.
 
   well hurry up, you're not going fast enough # => "That's what she said!"
 
@@ -120,12 +119,12 @@ Robut includes a few plugins that we've found useful:
   @robut echo hello world # => "hello world"
 
 
-[Robut::Plugin::Say] invokes the "say" command (text-to-speech). 
+[Robut::Plugin::Say] invokes the "say" command (text-to-speech).
 
   @robut say this rocks # (make sure robut is running on a machine with speakers :)
 
 
-[Robut::Plugin::Ping] responds with "pong". 
+[Robut::Plugin::Ping] responds with "pong".
 
   @robut ping # => "pong"
 
@@ -133,11 +132,6 @@ Robut includes a few plugins that we've found useful:
 [Robut::Plugin::Later] performs the given command after waiting an arbitrary amount of time.
 
   @robut in 5 minutes echo @justin wake up! # => (5 minutes later) "@justin wake up!"
-
-
-[Robut::Plugin::Rdio] uses the Rdio[http://www.rdio.com] API and a simple web server to queue and play songs on Rdio.
-
-  @robut play ok computer
 
 
 [Robut::Plugin::Weather] uses Google Weather to fetch for the weather for a given location and day.
