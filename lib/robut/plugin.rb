@@ -3,6 +3,45 @@
 # module.
 module Robut::Plugin
 
+  # Contains methods that will be added directly to a class including
+  # Robut::Plugin.
+  module ClassMethods
+
+    # Sets up a 'matcher' that will try to match input being sent to
+    # this plugin with a regular expression. If the expression
+    # matches, +action+ will be performed. +action+ will be passed any
+    # captured groups in the regular expression as parameters. For
+    # example:
+    #
+    #     match /^say hello to (\w+)/ do |name| ...
+    #
+    # The action is run in the context of an instance of a class that
+    # includes Robut::Plugin. Like +handle+, an action explicitly
+    # returning +true+ will stop the plugin chain from matching any
+    # further.
+    #
+    # Supported options:
+    #   :sent_to_me - only try to match this regexp if it contains an @reply to robut.
+    #                 This will also strip the @reply from the message we're trying
+    #                 to match on, so ^ and $ will still do the right thing.
+    def match(regexp, options = {}, &action)
+      matchers << [regexp, options, action, @last_description]
+      @last_description = nil
+    end
+
+    # Provides a description for the next matcher
+    def desc(string)
+      @last_description = string
+    end
+
+    # A list of regular expressions to apply to input being sent to
+    # the plugin, along with blocks of actions to perform. Each
+    # element is a [regexp, options, action, description] array.
+    def matchers
+      @matchers ||= []
+    end
+  end
+
   class << self
     # A list of all available plugin classes. When you require a new
     # plugin class, you should add it to this list if you want it to
@@ -22,6 +61,11 @@ module Robut::Plugin
   attr_accessor :private_sender
 
   attr_accessor :reply_to
+
+  # :nodoc:
+  def self.included(klass)
+    klass.send(:extend, ClassMethods)
+  end
 
   # Creates a new instance of this plugin to reply to a particular
   # object over that object's connection
@@ -83,12 +127,24 @@ module Robut::Plugin
   # method.  Plugins are handled in the order that they appear in
   # Robut::Plugin.plugins
   def handle(time, sender_nick, message)
-    raise NotImplementedError, "Implement me in #{self.class.name}!"
+    if matchers.empty?
+      raise NotImplementedError, "Implement me in #{self.class.name}!"
+    else
+      find_match(message)
+    end
   end
 
   # Returns a list of messages describing the commands this plugin
   # handles.
   def usage
+    matchers.map do |regexp, options, action, description|
+      next unless description
+      if options[:sent_to_me]
+        at_nick + " " + description
+      else
+        description
+      end
+    end.compact
   end
 
   def fake_message(time, sender_nick, msg)
@@ -100,5 +156,31 @@ module Robut::Plugin
   # Accessor for the store instance
   def store
     connection.store
+  end
+
+  private
+
+  # Find and run all the actions associated with matchers that match
+  # +message+.
+  def find_match(message)
+    matchers.each do |regexp, options, action, description|
+      if options[:sent_to_me]
+        if sent_to_me?(message)
+          message = without_nick(message)
+        else
+          next
+        end
+      end
+
+      if match_data = message.match(regexp)
+        # Return true explicitly if this matcher explicitly returned true
+        break true if instance_exec(*match_data[1..-1], &action)
+      end
+    end
+  end
+
+  # The matchers defined by this plugin's class
+  def matchers
+    self.class.matchers
   end
 end

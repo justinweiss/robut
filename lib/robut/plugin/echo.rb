@@ -2,18 +2,8 @@
 class Robut::Plugin::Echo
   include Robut::Plugin
 
-  # Responds with +message+ if the command sent to robut is 'echo'.
-  def handle(time, sender_nick, message)
-    words = words(message)
-    if sent_to_me?(message) && words.first == 'echo'
-      phrase = words[1..-1].join(' ')
-      reply(phrase) unless phrase.empty?
-    end
+  desc "echo <message> - replies to the channel with <message>"
+  match /^echo (.*)/, :sent_to_me => true do |phrase|
+    reply(phrase) unless phrase.empty?
   end
-
-  # Returns a description of how to use this plugin
-  def usage
-    "#{at_nick} echo <message> - replies to the channel with <message>"
-  end
-
 end

@@ -4,6 +4,19 @@ class Robut::PluginTest < Test::Unit::TestCase
 
   class HandrolledStubPlugin
     include Robut::Plugin
+
+    match /^message sent to robut with anchor (\w+)/, :sent_to_me => true do |word|
+      reply word
+    end
+
+    desc "stop matcher - stop matching messages"
+    match /stop matcher/ do
+      true
+    end
+
+    match /stop matcher b/ do
+      reply "fail."
+    end
   end
 
   def setup
@@ -12,6 +25,25 @@ class Robut::PluginTest < Test::Unit::TestCase
         Robut::ConnectionMock
       )
     )
+  end
+
+  def test_sent_to_me_match
+    @plugin.handle(Time.now, "@john", "@robut message sent to robut with anchor pass")
+    assert_equal ["pass"], @plugin.reply_to.replies
+  end
+
+  def test_no_match_if_not_sent_to_me
+    @plugin.handle(Time.now, "@john", "message sent to robut with anchor pass")
+    assert_equal [], @plugin.reply_to.replies
+  end
+
+  def test_returning_true_stops_matching
+    @plugin.handle(Time.now, "@john", "stop matcher b")
+    assert_equal [], @plugin.reply_to.replies
+  end
+
+  def test_set_description
+    assert_equal ["stop matcher - stop matching messages"], @plugin.usage
   end
 
   def test_sent_to_me?

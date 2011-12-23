@@ -8,19 +8,13 @@
 class Robut::Plugin::Say
   include Robut::Plugin
 
-  # Returns a description of how to use this plugin
-  def usage
-    "#{at_nick} say <words> - uses Mac OS X's 'say' command to speak <words>"
+  desc "say <words> - uses Mac OS X's 'say' command to speak <words>"
+  match "^say (.*)$", :sent_to_me => true do |phrase|
+    phrase = clean(phrase)
+    system("say #{phrase}")
   end
-  
-  # Pipes +message+ through the +say+ command
-  def handle(time, sender_nick, message)
-    words = words(message)
-    if sent_to_me?(message) && words.first == "say"
-      phrase = clean(words[1..-1].join(' '))
-      system("say #{phrase}")
-    end
-  end
+
+  private
 
   def clean(str)
     str.gsub("'", "").gsub(/[^A-Za-z0-9\s]+/, " ").gsub(/\s+/, ' ').strip
