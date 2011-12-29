@@ -9,6 +9,10 @@ class Robut::PluginTest < Test::Unit::TestCase
       reply word
     end
 
+    match /^another message sent to robut with anchor (\w+)/, :sent_to_me => true do |word|
+      reply word
+    end
+
     desc "stop matcher - stop matching messages"
     match /stop matcher/ do
       true
@@ -29,6 +33,11 @@ class Robut::PluginTest < Test::Unit::TestCase
 
   def test_sent_to_me_match
     @plugin.handle(Time.now, "@john", "@robut message sent to robut with anchor pass")
+    assert_equal ["pass"], @plugin.reply_to.replies
+  end
+
+  def test_match_other_message_sent_to_me
+    @plugin.handle(Time.now, "@john", "@robut another message sent to robut with anchor pass")
     assert_equal ["pass"], @plugin.reply_to.replies
   end
 

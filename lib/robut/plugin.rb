@@ -164,17 +164,13 @@ module Robut::Plugin
   # +message+.
   def find_match(message)
     matchers.each do |regexp, options, action, description|
-      if options[:sent_to_me]
-        if sent_to_me?(message)
-          message = without_nick(message)
-        else
-          next
-        end
+      if options[:sent_to_me] && !sent_to_me?(message)
+        next
       end
 
-      if match_data = message.match(regexp)
+      if match_data = without_nick(message).match(regexp)
         # Return true explicitly if this matcher explicitly returned true
-        break true if instance_exec(*match_data[1..-1], &action)
+        break true if instance_exec(*match_data[1..-1], &action) == true
       end
     end
   end
