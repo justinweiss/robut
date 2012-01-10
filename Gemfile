@@ -8,6 +8,7 @@ group :test do
   gem 'simplecov'
   gem 'webmock'
   gem 'time-warp'
+  gem 'mocha'
 end
 
 group :plugin do
