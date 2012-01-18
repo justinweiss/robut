@@ -36,18 +36,25 @@ class Robut::Plugin::Quips
     store["quips"] ||= []
   end
 
+  # Update the list of quips stored in the quip database
+  def quips=(new_quips)
+    # I'd love to use a set here, but it doesn't serialize right to yaml
+    store["quips"] = new_quips
+  end
+
   # Adds +quip+ to the quip database
   def add_quip(quip)
-    quips << quip unless quips.include?(quip)
+    self.quips = (quips + Array(quip)) unless quips.include?(quip)
   end
 
   # Removes +quip+ from the quip database
   def remove_quip(quip)
-    quips.delete(quip)
+    self.quips = (quips - Array(quip)) if quips.include?(quip)
   end
 
   # Returns a random quip
   def random_quip
     quips[rand(quips.length)] unless quips.empty?
   end
+
 end
