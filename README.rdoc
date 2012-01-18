@@ -147,6 +147,12 @@ Robut includes a few plugins that we've found useful:
   @robut alias "cowboy" "@robut play bon jovi wanted dead or alive" # Cuz somtimes you need it.
   @robut alias w weather? # less typing for common stuff
 
+[Robut::Plugin::Quips] stores and posts Bugzilla-style quips.
+
+  @robut add quip It was great when I wrote it!
+  @robut quip # => It was great when I wrote it!
+  @robut remove quip It was great when I wrote it!
+
 [Robut::Plugin::Help] lists usage for all the plugins loaded into robut
 
   @robut help # => command usage
