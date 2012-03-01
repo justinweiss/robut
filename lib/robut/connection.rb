@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'xmpp4r'
 require 'xmpp4r/muc/helper/simplemucclient'
 require 'xmpp4r/roster/helper/roster'
