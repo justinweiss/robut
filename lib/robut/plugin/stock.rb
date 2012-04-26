@@ -20,8 +20,6 @@ class Robut::Plugin::Stock
     r = []
     stock_data.keys.sort.each do |sym|
       sd = stock_data[sym]
-      # "AAPL: -5.502 / -0.9%, bid: 604.37, ask: 604.5, close: 610.0 "
-
       r << "#{sym}: #{format_number(sd.changePoints)} / #{format_number(sd.changePercent)}%,\tbid: #{sd.bid},\task: #{sd.ask},\tprevious close: #{sd.previousClose}"
     end
     r.join("\n")
