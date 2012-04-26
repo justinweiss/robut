@@ -6,7 +6,7 @@ rescue LoadError
 end
 
 class Robut::Plugin::Stock
-  incude Robut::Plugin
+  include Robut::Plugin
 
   desc "stock <symbol> - Returns a stock data from Yahoo Finance"
   match /^stock (.*)/, :sent_to_me => true do |phrase|
