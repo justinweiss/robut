@@ -30,7 +30,7 @@ class Robut::Plugin::Stock
   end
 
   def pad_number(n)
-    sprintf ("%.2f", n)
+    sprintf("%.2f", n)
   end
 
   def format_stock_symbols(phrase)
