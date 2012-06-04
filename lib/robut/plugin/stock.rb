@@ -20,13 +20,17 @@ class Robut::Plugin::Stock
     r = []
     stock_data.keys.sort.each do |sym|
       sd = stock_data[sym]
-      r << "#{sym}: #{format_number(sd.changePoints)} / #{format_number(sd.changePercent)}%,\tbid: #{sd.bid},\task: #{sd.ask},\tprevious close: #{sd.previousClose}"
+      r << "#{sym}: #{format_number(sd.changePoints)} / #{format_number(sd.changePercent)}%,\tbid: #{pad_number(sd.bid)},\task: #{pad_number(sd.ask)},\tprevious close: #{sd.previousClose}"
     end
     r.join("\n")
   end
 
   def format_number(n)
-    n > 0 ? "+" + n.to_s : n.to_s
+    n > 0 ? "+" + pad_number(n) : pad_number(n)
+  end
+
+  def pad_number(n)
+    sprintf ("%.2f", n)
   end
 
   def format_stock_symbols(phrase)
