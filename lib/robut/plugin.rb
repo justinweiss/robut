@@ -109,12 +109,12 @@ module Robut::Plugin
 
   # The bot's nickname, for @-replies.
   def nick
-    connection.config.nick.split.first
+    connection.config.mention || connection.config.nick.tr(' ', '')
   end
 
   # #nick with the @-symbol prepended
   def at_nick
-    "@#{nick.downcase}"
+    "@#{nick}"
   end
 
   # Was +message+ sent to Robut as an @reply?

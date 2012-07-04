@@ -74,8 +74,11 @@ Robut::Connection.configure block:
   Robut::Connection.configure do |config|
     config.jid = '...@chat.hipchat.com/bot'
     config.password = 'password'
-    config.nick = 'My Nick'
+    config.nick = 'Bot Nick'
     config.rooms = ['1234_room_1@conf.hipchat.com', '1234_room_2@conf.hipchat.com']
+
+    # Custom @mention name
+    config.mention = 'Bot'
 
     # Example of the YamlStore which uses a yaml file for persistence
     Robut::Storage::YamlStore.file = "~/.robut_store"
