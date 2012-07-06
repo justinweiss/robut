@@ -13,9 +13,12 @@ Robut::Connection.configure do |config|
   # page: https://www.hipchat.com/help/category/xmpp
   config.jid = '...@chat.hipchat.com/bot'
   config.password = 'password'
-  config.nick = 'My Nick'
+  config.nick = 'Bot Nick'
   config.room = '...@conf.hipchat.com'
-  
+
+  # Custom @mention name
+  config.mention = 'Bot'
+
   # Some plugins require storage
   Robut::Storage::YamlStore.file = ".robut"
   config.store = Robut::Storage::YamlStore
