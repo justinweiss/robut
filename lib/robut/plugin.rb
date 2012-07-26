@@ -91,7 +91,7 @@ module Robut::Plugin
   # stripped out. This is useful to separate the 'parameters' from the
   # 'commands' in a message.
   def words(message, command = nil)
-    reply = at_nick
+    reply = at_nick.downcase
     command = command.downcase if command
     message.split.reject {|word| word.downcase == reply || word.downcase == command }
   end
@@ -100,7 +100,7 @@ module Robut::Plugin
   # Given "@robut do this thing", Returns "do this thing"
   def without_nick(message)
     possible_nick, command = message.split(' ', 2)
-    if possible_nick == at_nick
+    if possible_nick.casecmp(at_nick) == 0
       command
     else
       message
@@ -109,12 +109,12 @@ module Robut::Plugin
 
   # The bot's nickname, for @-replies.
   def nick
-    connection.config.nick.split.first
+    connection.config.mention || connection.config.nick.gsub(/[^0-9a-z]/i, '')
   end
 
   # #nick with the @-symbol prepended
   def at_nick
-    "@#{nick.downcase}"
+    "@#{nick}"
   end
 
   # Was +message+ sent to Robut as an @reply?
