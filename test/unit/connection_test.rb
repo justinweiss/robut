@@ -86,7 +86,8 @@ class ConnectionTest < Test::Unit::TestCase
     Robut::Plugin.plugins = [SimplePlugin]
     @connection = Robut::Connection.new({
         :jid => 'abc@def.com',
-        :nick => "Test Robut"
+        :nick => "Test Robut",
+        :mention => 'test'
       })
   end
 
