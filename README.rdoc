@@ -10,7 +10,7 @@ the full name ('@RobutTRobot'). Starting from v0.4.0, robut uses this
 new format by default. If you prefer the old style, you can set it in
 your Chatfile:
 
-  config.mention = 'robut'
+  config.mention_name = 'robut'
 
 == Installation and usage
 
@@ -88,7 +88,7 @@ Robut::Connection.configure block:
     config.rooms = ['1234_room_1@conf.hipchat.com', '1234_room_2@conf.hipchat.com']
 
     # Custom @mention name
-    config.mention = 'Bot'
+    config.mention_name = 'Bot'
 
     # Example of the YamlStore which uses a yaml file for persistence
     Robut::Storage::YamlStore.file = "~/.robut_store"

@@ -17,7 +17,7 @@ Robut::Connection.configure do |config|
   config.room = '...@conf.hipchat.com'
 
   # Custom @mention name
-  # config.mention = 'Bot'
+  # config.mention_name = 'Bot'
 
   # Some plugins require storage
   Robut::Storage::YamlStore.file = ".robut"

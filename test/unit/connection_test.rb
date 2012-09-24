@@ -87,7 +87,7 @@ class ConnectionTest < Test::Unit::TestCase
     @connection = Robut::Connection.new({
         :jid => 'abc@def.com',
         :nick => "Test Robut",
-        :mention => 'test'
+        :mention_name => 'test'
       })
   end
 

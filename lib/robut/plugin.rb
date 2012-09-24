@@ -109,7 +109,7 @@ module Robut::Plugin
 
   # The bot's nickname, for @-replies.
   def nick
-    connection.config.mention || connection.config.nick.gsub(/[^0-9a-z]/i, '')
+    connection.config.mention_name || connection.config.nick.gsub(/[^0-9a-z]/i, '')
   end
 
   # #nick with the @-symbol prepended
