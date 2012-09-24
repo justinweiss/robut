@@ -72,4 +72,20 @@ class Robut::PluginTest < Test::Unit::TestCase
     assert_equal "do this @robut", @plugin.without_nick("do this @robut")
   end
 
+  def test_sent_to_me_without_mention_configuration_option
+    setup_connection_without_mention_name
+    assert @plugin.sent_to_me?("@RobutTRobot hello there"), "sent_to_me? should match the standard HipChat mention format"
+    assert !@plugin.sent_to_me?("@Robut hello there"), "sent_to_me? should not match @robut if we don't have a mention name set"
+  end
+
+  private
+
+  def setup_connection_without_mention_name
+    @plugin = HandrolledStubPlugin.new(
+      Robut::PresenceMock.new(
+        Robut::ConnectionMock.new(OpenStruct.new(:nick => 'Robut t. Robot'))
+      )
+    )
+  end
+
 end
