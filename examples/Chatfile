@@ -8,8 +8,8 @@ Robut::Plugin.plugins << Robut::Plugin::TWSS
 
 # Configure the robut jabber connection and you're good to go!
 Robut::Connection.configure do |config|
-  # Note that the jid must end with /bot if you don't want robut to 
-  # spam the channel, as described by the last bullet point on this 
+  # Note that the jid must end with /bot if you don't want robut to
+  # spam the channel, as described by the last bullet point on this
   # page: https://www.hipchat.com/help/category/xmpp
   config.jid = '...@chat.hipchat.com/bot'
   config.password = 'password'
@@ -17,12 +17,12 @@ Robut::Connection.configure do |config|
   config.room = '...@conf.hipchat.com'
 
   # Custom @mention name
-  config.mention = 'Bot'
+  # config.mention = 'Bot'
 
   # Some plugins require storage
   Robut::Storage::YamlStore.file = ".robut"
   config.store = Robut::Storage::YamlStore
-  
+
   # Add a logger if you want to debug the connection
   # config.logger = Logger.new(STDOUT)
 end
