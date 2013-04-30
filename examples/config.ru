@@ -6,7 +6,7 @@ require 'robut'
 require 'ostruct'
 require 'logger'
 
-load ARGV[0] || './Chatfile'
+load './Chatfile'
 
 Robut::Web.set :connection, Robut::Connection.new.connect
 
