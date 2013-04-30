@@ -92,7 +92,6 @@ class Robut::Connection
     personal_message = Robut::PM.new(self, rooms)
 
     trap_signals
-    loop { sleep 1 }
   end
 
 private
