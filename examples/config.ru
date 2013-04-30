@@ -8,6 +8,6 @@ require 'logger'
 
 load ARGV[0] || './Chatfile'
 
-Robut::App.set :connection, Robut::Connection.new.connect
+Robut::Web.set :connection, Robut::Connection.new.connect
 
-run Robut::App
+run Robut::Web

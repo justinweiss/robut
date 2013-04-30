@@ -1,7 +1,7 @@
 require 'sinatra/base'
 
 module Robut
-  class App < Sinatra::Base
+  class Web < Sinatra::Base
     helpers do
       def say(*args)
         reply(*args)

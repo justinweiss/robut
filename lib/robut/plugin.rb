@@ -42,7 +42,7 @@ module Robut::Plugin
     end
 
     def http(&block)
-      Robut::App.class_eval &block
+      Robut::Web.class_eval &block
     end
   end
 

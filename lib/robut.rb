@@ -5,5 +5,5 @@ module Robut
   autoload :PM, 'robut/pm'
   autoload :Connection, 'robut/connection'
   autoload :Storage, 'robut/storage'
-  autoload :App, 'robut/app'
+  autoload :Web, 'robut/web'
 end
