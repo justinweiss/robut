@@ -92,6 +92,7 @@ class Robut::Connection
     personal_message = Robut::PM.new(self, rooms)
 
     trap_signals
+    self
   end
 
   # Send a message to all rooms.

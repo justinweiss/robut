@@ -40,6 +40,10 @@ module Robut::Plugin
     def matchers
       @matchers ||= []
     end
+
+    def http(&block)
+      Robut::App.class_eval &block
+    end
   end
 
   class << self
