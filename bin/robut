@@ -7,3 +7,4 @@ require 'logger'
 load ARGV[0] || './Chatfile'
 
 Robut::Connection.new.connect
+loop { sleep 1 }

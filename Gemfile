@@ -9,6 +9,7 @@ group :test do
   gem 'webmock'
   gem 'time-warp'
   gem 'mocha'
+  gem 'rack-test'
 end
 
 group :plugin do

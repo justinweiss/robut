@@ -39,6 +39,13 @@ first parameter:
 
 The Chatfile is just ruby code. A simple example can be found here: Chatfile[https://github.com/justinweiss/robut/blob/master/examples/Chatfile]
 
+== Robut::Web
+
+You can run Robut as a rack application, which allows it to accept
+incoming post requests (e.g. Heroku deploy hooks, GitHub post-recieve hooks, etc.)
+that can send messages to all connected rooms. Have a look at
+config.ru[https://github.com/justinweiss/robut/blob/master/examples/config.ru] for an example.
+
 === Adding and configuring plugins
 
 Plugins are ruby classes, so enabling a plugin just requires requiring
