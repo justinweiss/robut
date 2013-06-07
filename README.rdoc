@@ -2,16 +2,6 @@
 
 The friendly plugin-enabled HipChat bot.
 
-== NOTE: Breaking backwards compatibility!
-
-A little while ago, HipChat changed the way their mention names
-work. Instead of just using the first name ('@robut'), they now use
-the full name ('@RobutTRobot'). Starting from v0.4.0, robut uses this
-new format by default. If you prefer the old style, you can set it in
-your Chatfile:
-
-  config.mention_name = 'robut'
-
 == Installation and usage
 
 Robut can be installed by running <tt>gem install robut</tt>. This
