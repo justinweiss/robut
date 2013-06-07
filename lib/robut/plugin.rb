@@ -41,6 +41,21 @@ module Robut::Plugin
       @matchers ||= []
     end
 
+    # Allows you to define http methods that this plugin should respond to.
+    # This is useful if you're want to accept generic post data for Robut to
+    # display in all rooms (e.g. Heroku deploy hooks, GitHub post receive
+    # hooks, etc).
+    #
+    #     http do
+    #       post '/heroku' do
+    #         payload = Hashie::Mash.new(params)
+    #         say "#{payload.user} deployed #{payload.head} to #{payload.app}", nil
+    #         halt 200
+    #       end
+    #     end
+    #
+    # The action is run in the context of a Sinatra app (+Robut::Web+). So
+    # anything that Sinatra provides is available within the block.
     def http(&block)
       Robut::Web.class_eval &block
     end
