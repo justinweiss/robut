@@ -1,0 +1,47 @@
+PATH
+  remote: .
+  specs:
+    robut (0.4.0)
+      xmpp4r (~> 0.5.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.6)
+    calc (1.0.0)
+    classifier (1.3.1)
+      stemmer (>= 1.0.0)
+    crack (0.1.8)
+    meme_generator (1.9)
+      nokogiri (~> 1.4)
+    metaclass (0.0.1)
+    mocha (0.10.0)
+      metaclass (~> 0.0.1)
+    nokogiri (1.4.4)
+    rake (10.0.4)
+    simplecov (0.4.2)
+      simplecov-html (~> 0.4.4)
+    simplecov-html (0.4.5)
+    stemmer (1.0.1)
+    time-warp (1.0.8)
+    twss (0.0.5)
+      classifier (= 1.3.1)
+    webmock (1.6.4)
+      addressable (~> 2.2, > 2.2.5)
+      crack (>= 0.1.7)
+    xmpp4r (0.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  calc
+  meme_generator
+  mocha
+  nokogiri
+  rake
+  robut!
+  simplecov
+  time-warp
+  twss
+  webmock
