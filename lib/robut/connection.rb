@@ -85,14 +85,21 @@ class Robut::Connection
     self.roster = Jabber::Roster::Helper.new(client)
     roster.wait_for_roster
 
-    rooms = self.config.rooms.collect do |room_name|
+    self.rooms = self.config.rooms.collect do |room_name|
       Robut::Room.new(self, room_name).tap {|r| r.join }
     end
 
     personal_message = Robut::PM.new(self, rooms)
 
     trap_signals
-    loop { sleep 1 }
+    self
+  end
+
+  # Send a message to all rooms.
+  def reply(*args, &block)
+    self.rooms.each do |room|
+      room.reply(*args, &block)
+    end
   end
 
 private
