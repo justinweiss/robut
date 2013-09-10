@@ -78,19 +78,8 @@ class Robut::Connection
   # enters an infinite loop. Any messages sent to the room will pass
   # through all the included plugins.
   def connect
-    client.connect
-    client.auth(config.password)
-    client.send(Jabber::Presence.new.set_type(:available))
-
-    self.roster = Jabber::Roster::Helper.new(client)
-    roster.wait_for_roster
-
-    self.rooms = self.config.rooms.collect do |room_name|
-      Robut::Room.new(self, room_name).tap {|r| r.join }
-    end
-
-    personal_message = Robut::PM.new(self, rooms)
-
+    reconnect
+    client.on_exception { sleep 5; reconnect }
     trap_signals
     self
   end
@@ -103,6 +92,23 @@ class Robut::Connection
   end
 
 private
+
+  # Does all the setup needed to connect to the jabber chat.
+  def reconnect
+    client.connect
+    client.auth(config.password)
+    client.send(Jabber::Presence.new.set_type(:available))
+
+    self.roster = Jabber::Roster::Helper.new(client)
+    roster.wait_for_roster
+
+    self.rooms = self.config.rooms.collect do |room_name|
+      Robut::Room.new(self, room_name).tap {|r| r.join }
+    end
+
+    personal_message = Robut::PM.new(self, rooms)
+  end
+
   # Since we're entering an infinite loop, we have to trap TERM and
   # INT. If something like the Rdio plugin has started a server that
   # has already trapped those signals, we want to run those signal
