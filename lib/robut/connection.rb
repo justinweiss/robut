@@ -89,7 +89,9 @@ class Robut::Connection
       Robut::Room.new(self, room_name).tap {|r| r.join }
     end
 
-    personal_message = Robut::PM.new(self, rooms)
+    unless self.config.ignore_pm
+      personal_message = Robut::PM.new(self, rooms)
+    end
 
     trap_signals
     self

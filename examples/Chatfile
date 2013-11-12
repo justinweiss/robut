@@ -19,6 +19,9 @@ Robut::Connection.configure do |config|
   # Custom @mention name
   # config.mention_name = 'Bot'
 
+  # Ignore personal messages
+  config.ignore_pm = true
+
   # Some plugins require storage
   Robut::Storage::YamlStore.file = ".robut"
   config.store = Robut::Storage::YamlStore
