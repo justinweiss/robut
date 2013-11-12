@@ -67,7 +67,7 @@ class Robut::Connection
     self.client = Jabber::Client.new(self.config.jid)
     self.store = self.config.store || Robut::Storage::HashStore # default to in-memory store only
     self.config.rooms ||= Array(self.config.room) # legacy support?
-    self.config.enable_private_messaging ||= true # default to enabled
+    self.config.enable_private_messaging = true if self.config.enable_private_messaging.nil?
 
     if self.config.logger
       Jabber.logger = self.config.logger
