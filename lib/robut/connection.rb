@@ -91,7 +91,7 @@ class Robut::Connection
     end
 
     if self.config.enable_private_messaging
-      personal_message = Robut::PM.new(self, rooms)
+      Robut::PM.new(self, rooms)
     end
 
     trap_signals
