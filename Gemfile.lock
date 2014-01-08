@@ -17,7 +17,7 @@ GEM
       nokogiri (~> 1.4)
     metaclass (0.0.1)
     mini_portile (0.5.2)
-    mocha (0.10.0)
+    mocha (0.14.0)
       metaclass (~> 0.0.1)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
