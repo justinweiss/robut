@@ -8,6 +8,7 @@ class Robut::Plugin::Lunch
       "lunch? / food? - #{nick} will suggest a place to go eat",
       "#{at_nick} lunch places - lists all the lunch places #{nick} knows about",
       "#{at_nick} new lunch place <place> - tells #{nick} about a new place to eat",
+      "#{at_nick} add lunch place <place> - tells #{nick} about a new place to eat",
       "#{at_nick} remove lunch place <place> - tells #{nick} not to suggest <place> anymore"
     ]
   end
@@ -31,11 +32,11 @@ class Robut::Plugin::Lunch
         reply places.join(', ')
       end
     # @robut new lunch place Green Leaf
-    elsif phrase =~ /new lunch place (.*)/i && sent_to_me?(message)
+    elsif phrase =~ /(?:new|add) lunch place (.*)/i && sent_to_me?(message)
       place = $1
       new_place(place)
       reply "Ok, I'll add \"#{place}\" to the the list of lunch places"
-    # @robut remove luynch place Green Leaf
+    # @robut remove lunch place Green Leaf
     elsif phrase =~ /remove lunch place (.*)/i && sent_to_me?(message)
       place = $1
       remove_place(place)
