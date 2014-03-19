@@ -6,7 +6,7 @@ class Robut::Plugin::GoogleImages
 
   desc "image <query> - responds with the first image from a Google Images search for <query>"
   match /^image (.*)/, :sent_to_me => true do |query|
-    image = Google::Search::Image.new(:query => query).first
+    image = Google::Search::Image.new(:query => query, :safe => :active).first
 
     if image
       reply image.uri
