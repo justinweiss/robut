@@ -79,7 +79,7 @@ class Robut::Connection
   # enters an infinite loop. Any messages sent to the room will pass
   # through all the included plugins.
   def connect
-    client.connect
+    client.connect(config.host, config.port||5222)
     client.auth(config.password)
     client.send(Jabber::Presence.new.set_type(:available))
 
