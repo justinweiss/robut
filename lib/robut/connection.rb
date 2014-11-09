@@ -68,6 +68,7 @@ class Robut::Connection
     self.store = self.config.store || Robut::Storage::HashStore # default to in-memory store only
     self.config.rooms ||= Array(self.config.room) # legacy support?
     self.config.enable_private_messaging = true if self.config.enable_private_messaging.nil?
+    self.config.port ||= 5222
 
     if self.config.logger
       Jabber.logger = self.config.logger
@@ -79,7 +80,7 @@ class Robut::Connection
   # enters an infinite loop. Any messages sent to the room will pass
   # through all the included plugins.
   def connect
-    client.connect
+    client.connect(config.host, config.port)
     client.auth(config.password)
     client.send(Jabber::Presence.new.set_type(:available))
 
