@@ -19,6 +19,10 @@ class Robut::Plugin::Meme
   desc "meme <meme> <line1>;<line2> - responds with a link to a generated <meme> image using <line1> and <line2>.  " +
     "See http://memecaptain.com/ for a list of memes.  You can also pass a link to your own image as the meme."
   match /^meme (\S+) (.*)$/, :sent_to_me => true do |meme, text|
+    # prepend http:// if meme looks like a URL without a scheme
+    # - allows submission of image URLs without hipchat adding an image preview
+    meme = "http://#{meme}" if meme =~ /[a-z0-9]+\.[a-z0-9]+\//i && !meme.include?("://")
+
     if meme.include?("://")
       url = meme
     else
