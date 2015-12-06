@@ -10,7 +10,7 @@ class Robut::Plugin::Swift
   include Robut::Plugin
 
   desc "swift <command> - Run swift code"
-  match "^swift (.*)$", :sent_to_me => true do |phrase|
+  match "^swift (.*)", :sent_to_me => true do |phrase|
 
     # Create file if it doesn't exist
     file_name = "/tmp/test.swift"
