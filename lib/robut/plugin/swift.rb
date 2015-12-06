@@ -11,11 +11,19 @@ class Robut::Plugin::Swift
 
   desc "swift <command> - Run swift code"
   match "^swift (.*)$", :sent_to_me => true do |phrase|
-    output, status = Open3.capture2("swift #{phrase}")
+
+    # Create file if it doesn't exist
+    file_name = "/tmp/test.swift"
+    path_name = Pathname.new(file_name)
+
+    # Write file to disk
+    IO.write(file_name, phrase)
+
+    output, error, status = Open3.capture3("swift #{file_name}")
     if status.success?
       reply(output)
     else
-      reply("Something wen't wrong...")
+      reply("Something wen't wrong... #{error}")
     end
   end
 
