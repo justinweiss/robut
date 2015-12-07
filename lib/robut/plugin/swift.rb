@@ -5,26 +5,44 @@
 #
 #
 require "open3"
+require "securerandom"
 
 class Robut::Plugin::Swift
   include Robut::Plugin
 
-  desc "swift <command> - Run swift code"
-  match "^swift (.*)", :sent_to_me => true do |phrase|
+  def handle(time, sender_nick, message)
 
-    # Create file if it doesn't exist
-    file_name = "/tmp/test.swift"
-    path_name = Pathname.new(file_name)
+    message = without_nick(message).lstrip()
+    if message.start_with? "swift"
 
-    # Write file to disk
-    IO.write(file_name, phrase)
+      # Remove swift prefix
+      message.sub!("swift", "")
 
-    output, error, status = Open3.capture3("swift #{file_name}")
-    if status.success?
-      reply(output)
-    else
-      reply("Something wen't wrong... #{error}")
+      # Debugging
+      # reply(message.inspect())
+
+      # Create a temporary file if it doesn't exist
+      file_name = "/tmp/swift-#{SecureRandom.uuid}.swift"
+      path_name = Pathname.new(file_name)
+
+      # import Foundation by default
+      message = "import Foundation\n#{message}"
+
+      # Write file to disk
+      IO.write(file_name, message)
+
+      output, error, status = Open3.capture3("swift #{file_name}")
+      if status.success?
+        reply(output)
+      else
+        reply("Something wen't wrong... #{error}")
+      end
+
+      # Remove temporary file
+      File.delete(file_name)
     end
   end
+
+  desc "swift <command> - Run swift code"
 
 end
