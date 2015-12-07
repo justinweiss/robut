@@ -35,7 +35,11 @@ class Robut::Plugin::Swift
       if status.success?
         reply(output)
       else
-        reply("Something wen't wrong... #{error}")
+        if status.exitstatus == 124 # Timeout
+          reply("Execution took too long, timed out.")
+        else
+          reply("Something wen't wrong... #{error}")
+        end
       end
 
       # Remove temporary file
