@@ -38,7 +38,7 @@ class Robut::Plugin::Swift
         if status.exitstatus == 124 # Timeout
           reply("Execution took too long, timed out.")
         else
-          reply("Something wen't wrong... #{error}")
+          reply("Something went wrong... #{error}")
         end
       end
 
