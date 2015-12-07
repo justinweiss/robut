@@ -31,7 +31,7 @@ class Robut::Plugin::Swift
       # Write file to disk
       IO.write(file_name, message)
 
-      output, error, status = Open3.capture3("swift #{file_name}")
+      output, error, status = Open3.capture3("timeout 20 swift #{file_name}")
       if status.success?
         reply(output)
       else
