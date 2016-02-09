@@ -48,6 +48,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.11)
   calc
   meme_generator
   mocha
@@ -59,3 +60,6 @@ DEPENDENCIES
   time-warp
   twss
   webmock
+
+BUNDLED WITH
+   1.11.2
