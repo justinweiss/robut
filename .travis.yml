@@ -11,3 +11,5 @@ rvm:
   # - rbx-19mode # currently in active development, may or may not work for your project
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec
+before_install:
+  - gem install bundler
