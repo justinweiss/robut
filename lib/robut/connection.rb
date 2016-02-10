@@ -67,6 +67,8 @@ class Robut::Connection
     self.client = Jabber::Client.new(self.config.jid)
     self.store = self.config.store || Robut::Storage::HashStore # default to in-memory store only
     self.config.rooms ||= Array(self.config.room) # legacy support?
+    self.config.enable_private_messaging = true if self.config.enable_private_messaging.nil?
+    self.config.port ||= 5222
 
     if self.config.logger
       Jabber.logger = self.config.logger
@@ -95,7 +97,7 @@ private
 
   # Does all the setup needed to connect to the jabber chat.
   def reconnect
-    client.connect
+    client.connect(config.host, config.port)
     client.auth(config.password)
     client.send(Jabber::Presence.new.set_type(:available))
 
@@ -106,7 +108,12 @@ private
       Robut::Room.new(self, room_name).tap {|r| r.join }
     end
 
-    personal_message = Robut::PM.new(self, rooms)
+    if self.config.enable_private_messaging
+      Robut::PM.new(self, rooms)
+    end
+
+    trap_signals
+    self
   end
 
   # Since we're entering an infinite loop, we have to trap TERM and

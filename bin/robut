@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby
 require 'rubygems'
-require 'robut'
+begin
+  require 'robut'
+rescue LoadError
+  require 'bundler/setup'
+  require 'robut'
+end
 require 'ostruct'
 require 'logger'
 

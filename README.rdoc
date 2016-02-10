@@ -180,7 +180,7 @@ in its class definition.
 
 To test your changes:
 
-1. Install [Bundler](http://gembundler.com/)
+1. Install Bundler[http://gembundler.com]
 2. Run `bundle install`
 3. Make your changes and run `bundle exec ruby -Ilib bin/robut ~/MyTestingChatfile`
 4. Add tests and verify by running `bundle exec rake test`
