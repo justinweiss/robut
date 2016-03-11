@@ -32,4 +32,13 @@ class Robut::Presence
       end
     end
   end
+
+  private
+
+  # Find a jid in the roster with the given name, case-insensitively
+  def find_jid_by_name(name)
+    name = name.downcase
+    connection.roster.items.detect {|jid, item| item.iname.downcase == name}.first
+  end
+
 end
