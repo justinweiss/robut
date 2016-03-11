@@ -1,4 +1,4 @@
-# Handles connections and responses to different rooms. 
+# Handles connections and responses to different rooms.
 class Robut::Room < Robut::Presence
 
   # The MUC that wraps the Jabber Chat protocol.
