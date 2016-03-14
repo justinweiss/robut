@@ -25,7 +25,7 @@ class Robut::Room < Robut::Presence
 
   # Send +message+ to the room we're currently connected to
   def reply(message, to)
-    if to.present?
+    if !to.nil?
       unless to.kind_of?(Jabber::JID)
         to = find_jid_by_name(to)
       end
