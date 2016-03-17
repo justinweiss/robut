@@ -48,4 +48,15 @@ class RoomTest < Test::Unit::TestCase
 
     assert_equal @room.muc.room, "#{@room.name}/#{@room.connection.config.nick}"
   end
+
+  def test_sends_pm_from_room_context
+    @room.muc = MucMock.new
+    @room.join
+
+    id = Jabber::JID.new
+
+    @room.reply("My message", id)
+
+    assert id  ==  @room.muc.messages.first.to.domain
+  end
 end
