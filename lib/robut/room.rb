@@ -1,4 +1,4 @@
-# Handles connections and responses to different rooms. 
+# Handles connections and responses to different rooms.
 class Robut::Room < Robut::Presence
 
   # The MUC that wraps the Jabber Chat protocol.
@@ -24,7 +24,16 @@ class Robut::Room < Robut::Presence
   end
 
   # Send +message+ to the room we're currently connected to
+  # or user if 'to' is provided.
   def reply(message, to)
-    muc.send(Jabber::Message.new(muc.room, message))
+    if to.nil?
+      muc.send(Jabber::Message.new(muc.room, message))
+    else
+      unless to.kind_of?(Jabber::JID)
+        to = find_jid_by_name(to)
+      end
+
+      muc.send(Jabber::Message.new(to, message))
+    end
   end
 end

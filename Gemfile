@@ -5,6 +5,7 @@ gemspec
 gem 'rake'
 
 group :test do
+  gem 'test-unit'
   gem 'simplecov'
   gem 'webmock'
   gem 'time-warp'
