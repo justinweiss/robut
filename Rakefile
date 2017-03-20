@@ -25,3 +25,6 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_dir = 'doc'
 end
 
+task :console do
+  exec "irb -r robut -I ./lib"
+end
