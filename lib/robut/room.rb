@@ -21,6 +21,11 @@ class Robut::Room < Robut::Presence
     end
 
     muc.join(self.name + '/' + connection.config.nick)
+
+    # Allow plugins to set a room on-join message
+    unless connection.config.on_join_message.nil?
+      muc.send(Jabber::Message.new(muc.room, connection.config.on_join_message))
+    end
   end
 
   # Send +message+ to the room we're currently connected to

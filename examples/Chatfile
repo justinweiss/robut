@@ -16,6 +16,9 @@ Robut::Connection.configure do |config|
   config.nick = 'Bot Nick'
   config.room = '...@conf.hipchat.com'
 
+  # Optional. Have your bot announce their arrival.
+  config.on_join_message = 'Good morning vietnam!'
+
   # Custom @mention name
   # config.mention_name = 'Bot'
 
