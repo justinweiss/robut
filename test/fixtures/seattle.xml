@@ -1,1 +1,50 @@
-<?xml version="1.0"?><xml_api_reply version="1"><weather module_id="0" tab_id="0" mobile_row="0" mobile_zipped="1" row="0" section="0" ><forecast_information><city data="Seattle, WA"/><postal_code data="Seattle"/><latitude_e6 data=""/><longitude_e6 data=""/><forecast_date data="2011-05-23"/><current_date_time data="2011-05-23 22:52:57 +0000"/><unit_system data="US"/></forecast_information><current_conditions><condition data="Mostly Cloudy"/><temp_f data="58"/><temp_c data="14"/><humidity data="Humidity: 45%"/><icon data="/ig/images/weather/mostly_cloudy.gif"/><wind_condition data="Wind: E at 7 mph"/></current_conditions><forecast_conditions><day_of_week data="Mon"/><low data="48"/><high data="59"/><icon data="/ig/images/weather/partly_cloudy.gif"/><condition data="Partly Cloudy"/></forecast_conditions><forecast_conditions><day_of_week data="Tue"/><low data="51"/><high data="67"/><icon data="/ig/images/weather/partly_cloudy.gif"/><condition data="Partly Cloudy"/></forecast_conditions><forecast_conditions><day_of_week data="Wed"/><low data="49"/><high data="61"/><icon data="/ig/images/weather/rain.gif"/><condition data="Showers"/></forecast_conditions><forecast_conditions><day_of_week data="Thu"/><low data="49"/><high data="57"/><icon data="/ig/images/weather/rain.gif"/><condition data="Showers"/></forecast_conditions></weather></xml_api_reply>
+<?xml version="1.0" encoding="UTF-8"?>
+<xml_api_reply version="1">
+   <weather module_id="0" tab_id="0" mobile_row="0" mobile_zipped="1" row="0" section="0">
+      <forecast_information>
+         <city data="Seattle, WA" />
+         <postal_code data="Seattle" />
+         <latitude_e6 data="" />
+         <longitude_e6 data="" />
+         <forecast_date data="2011-05-23" />
+         <current_date_time data="2011-05-23 22:52:57 +0000" />
+         <unit_system data="US" />
+      </forecast_information>
+      <current_conditions>
+         <condition data="Mostly Cloudy" />
+         <temp_f data="58" />
+         <temp_c data="14" />
+         <humidity data="Humidity: 45%" />
+         <icon data="/ig/images/weather/mostly_cloudy.gif" />
+         <wind_condition data="Wind: E at 7 mph" />
+      </current_conditions>
+      <forecast_conditions>
+         <day_of_week data="Mon" />
+         <low data="48" />
+         <high data="59" />
+         <icon data="/ig/images/weather/partly_cloudy.gif" />
+         <condition data="Partly Cloudy" />
+      </forecast_conditions>
+      <forecast_conditions>
+         <day_of_week data="Tue" />
+         <low data="51" />
+         <high data="67" />
+         <icon data="/ig/images/weather/partly_cloudy.gif" />
+         <condition data="Partly Cloudy" />
+      </forecast_conditions>
+      <forecast_conditions>
+         <day_of_week data="Wed" />
+         <low data="49" />
+         <high data="61" />
+         <icon data="/ig/images/weather/rain.gif" />
+         <condition data="Showers" />
+      </forecast_conditions>
+      <forecast_conditions>
+         <day_of_week data="Thu" />
+         <low data="49" />
+         <high data="57" />
+         <icon data="/ig/images/weather/rain.gif" />
+         <condition data="Showers" />
+      </forecast_conditions>
+   </weather>
+</xml_api_reply>

@@ -1,3 +1,5 @@
+{<img src="https://travis-ci.org/justinweiss/robut.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/justinweiss/robut]
+
 = Robut
 
 The friendly plugin-enabled HipChat bot.

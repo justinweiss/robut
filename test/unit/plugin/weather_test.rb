@@ -51,7 +51,7 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
   def test_handle_day
     stub_request(:any, "http://www.google.com/ig/api?weather=Seattle").to_return(:body => File.open(File.expand_path("../../../fixtures/seattle.xml", __FILE__), "r").read)
 
-    pretend_now_is(2011,"may",23,17) do
+    pretend_now_is(Time.parse("2011/05/23 17:00")) do
       @plugin.handle(Time.now, "John", "Seattle weather tuesday?")
       assert_equal( ["Forecast for Seattle, WA on Tue: Partly Cloudy, High: 67F, Low: 51F"], @plugin.reply_to.replies )
     end
@@ -60,7 +60,7 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
   def test_handle_tomorrow
     stub_request(:any, "http://www.google.com/ig/api?weather=Seattle").to_return(:body => File.open(File.expand_path("../../../fixtures/seattle.xml", __FILE__), "r").read)
 
-    pretend_now_is(2011,"may",23,17) do
+    pretend_now_is(Time.parse("2011/05/23 17:00")) do
       @plugin.handle(Time.now, "John", "Seattle weather tomorrow?")
       assert_equal( ["Forecast for Seattle, WA on Tue: Partly Cloudy, High: 67F, Low: 51F"], @plugin.reply_to.replies )
     end
@@ -69,7 +69,7 @@ class Robut::Plugin::WeatherTest < Test::Unit::TestCase
   def test_handle_today
     stub_request(:any, "http://www.google.com/ig/api?weather=Seattle").to_return(:body => File.open(File.expand_path("../../../fixtures/seattle.xml", __FILE__), "r").read)
 
-    pretend_now_is(2011,"may",23,17) do
+    pretend_now_is(Time.parse("2011/05/23 17:00")) do
       @plugin.handle(Time.now, "John", "Seattle weather today?")
       assert_equal( ["Forecast for Seattle, WA on Mon: Partly Cloudy, High: 59F, Low: 48F"], @plugin.reply_to.replies )
     end

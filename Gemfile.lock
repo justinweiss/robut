@@ -39,7 +39,7 @@ GEM
     test-unit (3.1.5)
       power_assert
     tilt (1.4.1)
-    time-warp (1.0.8)
+    time-warp (1.0.15)
     twss (0.0.5)
       classifier (= 1.3.1)
     webmock (1.6.4)
@@ -66,4 +66,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.11.2
+   1.13.1

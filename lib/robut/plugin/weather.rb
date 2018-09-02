@@ -18,7 +18,7 @@ class Robut::Plugin::Weather
       "#{at_nick} weather <location> Tuesday - returns the weather for <location> Tuesday"
     ]
   end
-  
+
   def handle(time, sender_nick, message)
     # ignore messages that don't end in ?
     return unless message[message.length - 1, 1] == "?"
