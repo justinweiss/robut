@@ -29,7 +29,7 @@ end
 class RoomTest < Test::Unit::TestCase
   def setup
     Robut::Plugin.plugins = [Robut::Plugin::Echo]
-    connection = Robut::ConnectionMock.new(OpenStruct.new(:nick => 'Dodo'))
+    connection = Robut::ConnectionMock.new(OpenStruct.new(:nick => 'Dodo', :on_join_message => 'Good morning vietnam!!'))
     @room = Robut::Room.new(connection, 'fake_room')
   end
 
@@ -39,7 +39,7 @@ class RoomTest < Test::Unit::TestCase
     @room.join
 
     @room.muc.on_message(Time.now, "Art Vandelay", "@dodo echo #{message}")
-    assert_equal @room.muc.messages.first.body, message
+    assert_equal @room.muc.messages[1].body, message
   end
 
   def test_joining_the_right_room
@@ -57,6 +57,13 @@ class RoomTest < Test::Unit::TestCase
 
     @room.reply("My message", id)
 
-    assert id  ==  @room.muc.messages.first.to.domain
+    assert id  ==  @room.muc.messages[1].to.domain
+  end
+
+  def test_on_join_welcome_message
+    @room.muc = MucMock.new
+    @room.join
+
+    assert_equal @room.muc.messages[0].body, @room.connection.config.on_join_message
   end
 end
