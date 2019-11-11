@@ -35,6 +35,7 @@ class Robut::Connection
 
   # The rooms that robut is connected to.
   attr_accessor :rooms
+  attr_accessor :joins
 
   class << self
     # Class-level config. This is set by the +configure+ class method,
@@ -97,6 +98,17 @@ class Robut::Connection
 
     trap_signals
     self
+  end
+
+  def handle_join
+    self.config.logger.info 'trying join...'
+    if self.joins
+      room = Robut::Room.new(self,  self.joins)
+      room.join
+      self.rooms << room
+      room.reply("I am here", nil)
+      self.joins = nil
+    end
   end
 
   # Send a message to all rooms.

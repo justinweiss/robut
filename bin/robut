@@ -11,5 +11,8 @@ require 'logger'
 
 load ARGV[0] || './Chatfile'
 
-Robut::Connection.new.connect
-loop { sleep 1 }
+connection = Robut::Connection.new.connect
+loop do
+  connection.join_all_pending_rooms
+  sleep 1
+end
