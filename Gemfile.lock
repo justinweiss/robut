@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     robut (0.5.2)
-      sinatra (~> 1.3)
+      sinatra (>= 1.3, < 4.0)
       xmpp4r (~> 0.5.0)
 
 GEM
@@ -19,33 +19,37 @@ GEM
     mini_portile (0.5.2)
     mocha (0.14.0)
       metaclass (~> 0.0.1)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     power_assert (0.2.6)
-    rack (1.5.2)
-    rack-protection (1.5.1)
+    rack (2.2.4)
+    rack-protection (3.0.4)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rake (10.0.4)
+    ruby2_keywords (0.0.5)
     simplecov (0.4.2)
       simplecov-html (~> 0.4.4)
     simplecov-html (0.4.5)
-    sinatra (1.4.4)
-      rack (~> 1.4)
-      rack-protection (~> 1.4)
-      tilt (~> 1.3, >= 1.3.4)
+    sinatra (3.0.4)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.4)
+      tilt (~> 2.0)
     stemmer (1.0.1)
     test-unit (3.1.5)
       power_assert
-    tilt (1.4.1)
+    tilt (2.0.11)
     time-warp (1.0.15)
     twss (0.0.5)
       classifier (= 1.3.1)
     webmock (1.6.4)
       addressable (~> 2.2, > 2.2.5)
       crack (>= 0.1.7)
-    xmpp4r (0.5.5)
+    xmpp4r (0.5.6)
 
 PLATFORMS
   ruby
